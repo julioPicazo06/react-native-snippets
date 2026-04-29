@@ -1,0 +1,61 @@
+{
+  "name": "react-native-snippet-lab",
+  "displayName": "React Native Snippet Lab",
+  "description": "Snippets and style aliases for React Native in Visual Studio Code.",
+  "version": "0.0.1",
+  "publisher": "juliopicazo",
+  "engines": {
+    "vscode": "^1.85.0"
+  },
+  "categories": [
+    "Snippets",
+    "Programming Languages"
+  ],
+  "keywords": [
+    "react-native",
+    "snippets",
+    "styles",
+    "autocomplete",
+    "vscode"
+  ],
+  "activationEvents": [
+    "onLanguage:javascript",
+    "onLanguage:javascriptreact",
+    "onLanguage:typescript",
+    "onLanguage:typescriptreact"
+  ],
+  "main": "./src/extension.js",
+  "contributes": {
+    "snippets": [
+      {
+        "language": "javascript",
+        "path": "./snippets/react-native-snippets.json"
+      },
+      {
+        "language": "javascriptreact",
+        "path": "./snippets/react-native-snippets.json"
+      },
+      {
+        "language": "typescript",
+        "path": "./snippets/react-native-snippets.json"
+      },
+      {
+        "language": "typescriptreact",
+        "path": "./snippets/react-native-snippets.json"
+      }
+    ],
+    "configuration": {
+      "title": "React Native Snippet Lab",
+      "properties": {
+        "reactNativeSnippetLab.enableStyleAliases": {
+          "type": "boolean",
+          "default": true,
+          "description": "Enable style alias completions such as bg, c, px and py."
+        }
+      }
+    }
+  },
+  "scripts": {
+    "check": "node --check src/extension.js"
+  }
+}

@@ -1,0 +1,569 @@
+{
+  "React Native Functional Component": {
+    "scope": "javascript,javascriptreact,typescript,typescriptreact",
+    "prefix": "rnfc",
+    "description": "Create a React Native functional component with StyleSheet.",
+    "body": [
+      "import React from 'react';",
+      "import { StyleSheet, Text, View } from 'react-native';",
+      "",
+      "export default function ${1:ComponentName}() {",
+      "  return (",
+      "    <View style={styles.container}>",
+      "      <Text>${2:ComponentName}</Text>",
+      "    </View>",
+      "  );",
+      "}",
+      "",
+      "const styles = StyleSheet.create({",
+      "  container: {",
+      "    flex: 1,",
+      "  },",
+      "});"
+    ]
+  },
+  "React Native Screen": {
+    "scope": "javascript,javascriptreact,typescript,typescriptreact",
+    "prefix": "rnscreen",
+    "description": "Create a screen component with SafeAreaView.",
+    "body": [
+      "import React from 'react';",
+      "import { SafeAreaView, StyleSheet, Text } from 'react-native';",
+      "",
+      "export default function ${1:ScreenName}() {",
+      "  return (",
+      "    <SafeAreaView style={styles.container}>",
+      "      <Text>${2:ScreenName}</Text>",
+      "    </SafeAreaView>",
+      "  );",
+      "}",
+      "",
+      "const styles = StyleSheet.create({",
+      "  container: {",
+      "    flex: 1,",
+      "  },",
+      "});"
+    ]
+  },
+  "React Native View": {
+    "scope": "javascript,javascriptreact,typescript,typescriptreact",
+    "prefix": "rnview",
+    "description": "Insert a styled View.",
+    "body": [
+      "<View style={styles.${1:container}}>",
+      "  ${2}",
+      "</View>"
+    ]
+  },
+  "React Native Text": {
+    "scope": "javascript,javascriptreact,typescript,typescriptreact",
+    "prefix": "rntext",
+    "description": "Insert a styled Text.",
+    "body": [
+      "<Text style={styles.${1:text}}>${2:Label}</Text>"
+    ]
+  },
+  "React Native Pressable": {
+    "scope": "javascript,javascriptreact,typescript,typescriptreact",
+    "prefix": "rnpress",
+    "description": "Insert a Pressable button block.",
+    "body": [
+      "<Pressable style={styles.${1:button}} onPress={${2:handlePress}}>",
+      "  <Text style={styles.${3:buttonText}}>${4:Press me}</Text>",
+      "</Pressable>"
+    ]
+  },
+  "React Native TextInput": {
+    "scope": "javascript,javascriptreact,typescript,typescriptreact",
+    "prefix": "rninput",
+    "description": "Insert a TextInput.",
+    "body": [
+      "<TextInput",
+      "  value={${1:value}}",
+      "  onChangeText={${2:setValue}}",
+      "  placeholder=\"${3:Type here}\"",
+      "  style={styles.${4:input}}",
+      "/>"
+    ]
+  },
+  "React Native ScrollView": {
+    "scope": "javascript,javascriptreact,typescript,typescriptreact",
+    "prefix": "rnscroll",
+    "description": "Insert a ScrollView.",
+    "body": [
+      "<ScrollView contentContainerStyle={styles.${1:content}}>",
+      "  ${2}",
+      "</ScrollView>"
+    ]
+  },
+  "React Native FlatList": {
+    "scope": "javascript,javascriptreact,typescript,typescriptreact",
+    "prefix": "rnlist",
+    "description": "Insert a FlatList scaffold.",
+    "body": [
+      "<FlatList",
+      "  data={${1:data}}",
+      "  keyExtractor={(item) => item.${2:id}.toString()}",
+      "  renderItem={({ item }) => (",
+      "    <View>",
+      "      <Text>{item.${3:title}}</Text>",
+      "    </View>",
+      "  )}",
+      "/>"
+    ]
+  },
+  "React Native Image": {
+    "scope": "javascript,javascriptreact,typescript,typescriptreact",
+    "prefix": "rnimage",
+    "description": "Insert an Image component.",
+    "body": [
+      "<Image",
+      "  source={{ uri: '${1:https://example.com/image.png}' }}",
+      "  style={styles.${2:image}}",
+      "/>"
+    ]
+  },
+  "React Native Modal": {
+    "scope": "javascript,javascriptreact,typescript,typescriptreact",
+    "prefix": "rnmodal",
+    "description": "Insert a Modal scaffold.",
+    "body": [
+      "<Modal visible={${1:isVisible}} transparent animationType=\"slide\">",
+      "  <View style={styles.${2:overlay}}>",
+      "    <View style={styles.${3:modal}}>",
+      "      ${4}",
+      "    </View>",
+      "  </View>",
+      "</Modal>"
+    ]
+  },
+  "React useState": {
+    "scope": "javascript,javascriptreact,typescript,typescriptreact",
+    "prefix": "rnstate",
+    "description": "Insert a useState hook.",
+    "body": [
+      "const [${1:value}, ${2:setValue}] = React.useState(${3:null});"
+    ]
+  },
+  "React useEffect": {
+    "scope": "javascript,javascriptreact,typescript,typescriptreact",
+    "prefix": "rneffect",
+    "description": "Insert a useEffect hook.",
+    "body": [
+      "React.useEffect(() => {",
+      "  ${1}",
+      "",
+      "  return () => {",
+      "    ${2}",
+      "  };",
+      "}, [${3}]);"
+    ]
+  },
+  "React useRef": {
+    "scope": "javascript,javascriptreact,typescript,typescriptreact",
+    "prefix": "rnref",
+    "description": "Insert a useRef hook.",
+    "body": [
+      "const ${1:refName} = React.useRef(${2:null});"
+    ]
+  },
+  "React Custom Hook": {
+    "scope": "javascript,javascriptreact,typescript,typescriptreact",
+    "prefix": "rnhook",
+    "description": "Create a custom hook scaffold.",
+    "body": [
+      "import React from 'react';",
+      "",
+      "export function use${1:FeatureName}() {",
+      "  const [${2:data}, ${3:setData}] = React.useState(${4:null});",
+      "  const [${5:loading}, ${6:setLoading}] = React.useState(false);",
+      "",
+      "  const ${7:run} = async () => {",
+      "    try {",
+      "      ${6:setLoading}(true);",
+      "      ${8}",
+      "    } finally {",
+      "      ${6:setLoading}(false);",
+      "    }",
+      "  };",
+      "",
+      "  return {",
+      "    ${2:data},",
+      "    ${5:loading},",
+      "    ${7:run},",
+      "  };",
+      "}"
+    ]
+  },
+  "React Native useWindowDimensions": {
+    "scope": "javascript,javascriptreact,typescript,typescriptreact",
+    "prefix": "rndim",
+    "description": "Insert useWindowDimensions hook.",
+    "body": [
+      "const { width, height } = useWindowDimensions();"
+    ]
+  },
+  "React Native AppState Effect": {
+    "scope": "javascript,javascriptreact,typescript,typescriptreact",
+    "prefix": "rnappstate",
+    "description": "Listen for AppState changes.",
+    "body": [
+      "React.useEffect(() => {",
+      "  const subscription = AppState.addEventListener('change', (nextAppState) => {",
+      "    ${1}",
+      "  });",
+      "",
+      "  return () => {",
+      "    subscription.remove();",
+      "  };",
+      "}, []);"
+    ]
+  },
+  "React Navigation Native Stack": {
+    "scope": "javascript,javascriptreact,typescript,typescriptreact",
+    "prefix": "rnstack",
+    "description": "Create a React Navigation native stack scaffold.",
+    "body": [
+      "import React from 'react';",
+      "import { NavigationContainer } from '@react-navigation/native';",
+      "import { createNativeStackNavigator } from '@react-navigation/native-stack';",
+      "",
+      "const Stack = createNativeStackNavigator();",
+      "",
+      "function ${1:HomeScreen}() {",
+      "  return null;",
+      "}",
+      "",
+      "function ${2:DetailsScreen}() {",
+      "  return null;",
+      "}",
+      "",
+      "export default function ${3:AppNavigator}() {",
+      "  return (",
+      "    <NavigationContainer>",
+      "      <Stack.Navigator screenOptions={{ headerShown: ${4:false} }}>",
+      "        <Stack.Screen name=\"${1:HomeScreen}\" component={${1:HomeScreen}} />",
+      "        <Stack.Screen name=\"${2:DetailsScreen}\" component={${2:DetailsScreen}} />",
+      "      </Stack.Navigator>",
+      "    </NavigationContainer>",
+      "  );",
+      "}"
+    ]
+  },
+  "React Navigation Bottom Tabs": {
+    "scope": "javascript,javascriptreact,typescript,typescriptreact",
+    "prefix": "rntabs",
+    "description": "Create a bottom tabs navigator scaffold.",
+    "body": [
+      "import React from 'react';",
+      "import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';",
+      "",
+      "const Tab = createBottomTabNavigator();",
+      "",
+      "function ${1:HomeScreen}() {",
+      "  return null;",
+      "}",
+      "",
+      "function ${2:ProfileScreen}() {",
+      "  return null;",
+      "}",
+      "",
+      "export default function ${3:TabsNavigator}() {",
+      "  return (",
+      "    <Tab.Navigator screenOptions={{ headerShown: ${4:false} }}>",
+      "      <Tab.Screen name=\"${1:Home}\" component={${1:HomeScreen}} />",
+      "      <Tab.Screen name=\"${2:Profile}\" component={${2:ProfileScreen}} />",
+      "    </Tab.Navigator>",
+      "  );",
+      "}"
+    ]
+  },
+  "React Navigation Navigate": {
+    "scope": "javascript,javascriptreact,typescript,typescriptreact",
+    "prefix": "rnnavto",
+    "description": "Navigate to another screen.",
+    "body": [
+      "navigation.navigate('${1:ScreenName}'${2:, ${3:{}}});"
+    ]
+  },
+  "React Navigation useNavigation": {
+    "scope": "javascript,javascriptreact,typescript,typescriptreact",
+    "prefix": "rnnav",
+    "description": "Insert useNavigation hook.",
+    "body": [
+      "const navigation = useNavigation();"
+    ]
+  },
+  "React Navigation useRoute": {
+    "scope": "javascript,javascriptreact,typescript,typescriptreact",
+    "prefix": "rnroute",
+    "description": "Insert useRoute hook.",
+    "body": [
+      "const route = useRoute();"
+    ]
+  },
+  "React Navigation useFocusEffect": {
+    "scope": "javascript,javascriptreact,typescript,typescriptreact",
+    "prefix": "rnfocus",
+    "description": "Insert useFocusEffect hook.",
+    "body": [
+      "useFocusEffect(",
+      "  React.useCallback(() => {",
+      "    ${1}",
+      "",
+      "    return () => {",
+      "      ${2}",
+      "    };",
+      "  }, [${3}])",
+      ");"
+    ]
+  },
+  "StyleSheet Rule": {
+    "scope": "javascript,javascriptreact,typescript,typescriptreact",
+    "prefix": "rnstyle",
+    "description": "Insert a StyleSheet rule.",
+    "body": [
+      "${1:ruleName}: {",
+      "  ${2}",
+      "},"
+    ]
+  },
+  "React Native Form Screen": {
+    "scope": "javascript,javascriptreact,typescript,typescriptreact",
+    "prefix": "rnform",
+    "description": "Create a basic form screen with controlled inputs.",
+    "body": [
+      "import React from 'react';",
+      "import { Pressable, StyleSheet, Text, TextInput, View } from 'react-native';",
+      "",
+      "export default function ${1:FormScreen}() {",
+      "  const [form, setForm] = React.useState({",
+      "    name: '',",
+      "    email: '',",
+      "    password: '',",
+      "  });",
+      "",
+      "  const handleChange = (field, value) => {",
+      "    setForm((current) => ({",
+      "      ...current,",
+      "      [field]: value,",
+      "    }));",
+      "  };",
+      "",
+      "  const handleSubmit = () => {",
+      "    ${2}",
+      "  };",
+      "",
+      "  return (",
+      "    <View style={styles.container}>",
+      "      <TextInput",
+      "        placeholder=\"Name\"",
+      "        value={form.name}",
+      "        onChangeText={(value) => handleChange('name', value)}",
+      "        style={styles.input}",
+      "      />",
+      "      <TextInput",
+      "        placeholder=\"Email\"",
+      "        value={form.email}",
+      "        keyboardType=\"email-address\"",
+      "        autoCapitalize=\"none\"",
+      "        onChangeText={(value) => handleChange('email', value)}",
+      "        style={styles.input}",
+      "      />",
+      "      <TextInput",
+      "        placeholder=\"Password\"",
+      "        value={form.password}",
+      "        secureTextEntry",
+      "        onChangeText={(value) => handleChange('password', value)}",
+      "        style={styles.input}",
+      "      />",
+      "      <Pressable style={styles.button} onPress={handleSubmit}>",
+      "        <Text style={styles.buttonText}>${3:Submit}</Text>",
+      "      </Pressable>",
+      "    </View>",
+      "  );",
+      "}",
+      "",
+      "const styles = StyleSheet.create({",
+      "  container: {",
+      "    flex: 1,",
+      "    padding: 16,",
+      "    gap: 12,",
+      "  },",
+      "  input: {",
+      "    borderWidth: 1,",
+      "    borderColor: '#D0D5DD',",
+      "    borderRadius: 10,",
+      "    paddingHorizontal: 12,",
+      "    paddingVertical: 10,",
+      "  },",
+      "  button: {",
+      "    backgroundColor: '#111827',",
+      "    borderRadius: 10,",
+      "    paddingVertical: 12,",
+      "    alignItems: 'center',",
+      "  },",
+      "  buttonText: {",
+      "    color: '#FFFFFF',",
+      "    fontWeight: '600',",
+      "  },",
+      "});"
+    ]
+  },
+  "React Hook Form Controller": {
+    "scope": "javascript,javascriptreact,typescript,typescriptreact",
+    "prefix": "rncontroller",
+    "description": "Insert a react-hook-form Controller with TextInput.",
+    "body": [
+      "<Controller",
+      "  control={${1:control}}",
+      "  name=\"${2:fieldName}\"",
+      "  rules={{",
+      "    required: '${3:This field is required}',",
+      "  }}",
+      "  render={({ field: { onChange, onBlur, value }, fieldState: { error } }) => (",
+      "    <>",
+      "      <TextInput",
+      "        onBlur={onBlur}",
+      "        onChangeText={onChange}",
+      "        value={value}",
+      "        placeholder=\"${4:Type here}\"",
+      "        style={styles.${5:input}}",
+      "      />",
+      "      {error ? <Text style={styles.${6:errorText}}>{error.message}</Text> : null}",
+      "    </>",
+      "  )}",
+      "/>"
+    ]
+  },
+  "React Native FlatList Advanced": {
+    "scope": "javascript,javascriptreact,typescript,typescriptreact",
+    "prefix": "rnflat",
+    "description": "Insert a FlatList with loading, empty and refresh states.",
+    "body": [
+      "const [${1:data}, ${2:setData}] = React.useState([]);",
+      "const [${3:loading}, ${4:setLoading}] = React.useState(false);",
+      "const [${5:refreshing}, ${6:setRefreshing}] = React.useState(false);",
+      "",
+      "const ${7:fetchData} = async () => {",
+      "  try {",
+      "    ${4:setLoading}(true);",
+      "    ${8}",
+      "  } finally {",
+      "    ${4:setLoading}(false);",
+      "    ${6:setRefreshing}(false);",
+      "  }",
+      "};",
+      "",
+      "React.useEffect(() => {",
+      "  ${7:fetchData}();",
+      "}, []);",
+      "",
+      "<FlatList",
+      "  data={${1:data}}",
+      "  keyExtractor={(item, index) => item.${9:id}?.toString() ?? index.toString()}",
+      "  refreshing={${5:refreshing}}",
+      "  onRefresh={() => {",
+      "    ${6:setRefreshing}(true);",
+      "    ${7:fetchData}();",
+      "  }}",
+      "  ListEmptyComponent={!${3:loading} ? <Text>${10:No items found}</Text> : null}",
+      "  renderItem={({ item }) => (",
+      "    <View style={styles.${11:itemContainer}}>",
+      "      <Text>{item.${12:title}}</Text>",
+      "    </View>",
+      "  )}",
+      "/>"
+    ]
+  },
+  "React Native Search List": {
+    "scope": "javascript,javascriptreact,typescript,typescriptreact",
+    "prefix": "rnsearchlist",
+    "description": "Create a searchable FlatList pattern.",
+    "body": [
+      "const [${1:query}, ${2:setQuery}] = React.useState('');",
+      "const [${3:data}] = React.useState(${4:[]});",
+      "",
+      "const ${5:filteredData} = ${3:data}.filter((item) =>",
+      "  item.${6:title}.toLowerCase().includes(${1:query}.trim().toLowerCase())",
+      ");",
+      "",
+      "<View style={styles.${7:container}}>",
+      "  <TextInput",
+      "    value={${1:query}}",
+      "    onChangeText={${2:setQuery}}",
+      "    placeholder=\"${8:Search}\"",
+      "    style={styles.${9:searchInput}}",
+      "  />",
+      "  <FlatList",
+      "    data={${5:filteredData}}",
+      "    keyExtractor={(item, index) => item.${10:id}?.toString() ?? index.toString()}",
+      "    renderItem={({ item }) => (",
+      "      <View style={styles.${11:itemContainer}}>",
+      "        <Text>{item.${6:title}}</Text>",
+      "      </View>",
+      "    )}",
+      "  />",
+      "</View>"
+    ]
+  },
+  "React Native SectionList": {
+    "scope": "javascript,javascriptreact,typescript,typescriptreact",
+    "prefix": "rnsection",
+    "description": "Insert a SectionList scaffold.",
+    "body": [
+      "<SectionList",
+      "  sections={${1:sections}}",
+      "  keyExtractor={(item, index) => item.${2:id}?.toString() ?? index.toString()}",
+      "  renderSectionHeader={({ section }) => (",
+      "    <Text style={styles.${3:sectionTitle}}>{section.${4:title}}</Text>",
+      "  )}",
+      "  renderItem={({ item }) => (",
+      "    <View style={styles.${5:itemContainer}}>",
+      "      <Text>{item.${6:name}}</Text>",
+      "    </View>",
+      "  )}",
+      "/>"
+    ]
+  },
+  "React Native List Item": {
+    "scope": "javascript,javascriptreact,typescript,typescriptreact",
+    "prefix": "rnitem",
+    "description": "Insert a reusable list item row.",
+    "body": [
+      "<Pressable style={styles.${1:item}} onPress={() => ${2}}> ",
+      "  <View style={styles.${3:content}}>",
+      "    <Text style={styles.${4:title}}>${5:Title}</Text>",
+      "    <Text style={styles.${6:subtitle}}>${7:Subtitle}</Text>",
+      "  </View>",
+      "</Pressable>"
+    ]
+  },
+  "React Native TS Component": {
+    "scope": "typescript,typescriptreact",
+    "prefix": "rnts",
+    "description": "Create a typed React Native component.",
+    "body": [
+      "import React from 'react';",
+      "import { StyleSheet, Text, View } from 'react-native';",
+      "",
+      "type ${1:ComponentName}Props = {",
+      "  ${2:title}: string;",
+      "};",
+      "",
+      "export default function ${1:ComponentName}({ ${2:title} }: ${1:ComponentName}Props) {",
+      "  return (",
+      "    <View style={styles.container}>",
+      "      <Text>{${2:title}}</Text>",
+      "    </View>",
+      "  );",
+      "}",
+      "",
+      "const styles = StyleSheet.create({",
+      "  container: {",
+      "    flex: 1,",
+      "  },",
+      "});"
+    ]
+  }
+}
