@@ -73,6 +73,38 @@ Recommended current working policy:
 - release preparation -> `release/*`
 - production emergencies -> `hotfix/*`
 
+## Versioning and tags
+
+Use Semantic Versioning with annotated Git tags:
+
+- format: `v<major>.<minor>.<patch>`
+- examples:
+  - `v0.1.0`
+  - `v0.1.1`
+  - `v0.2.0`
+  - `v1.0.0`
+
+Rules:
+
+1. Create release tags only on `main`.
+2. Do not create tags on `develop`, `feature/*`, `fix/*`, or `release/*`.
+3. Create a tag only after the release branch has been merged into `main`.
+4. Use annotated tags, not lightweight tags.
+5. Push tags explicitly after the release is on `main`.
+
+Recommended version meaning:
+
+- `patch` for bug fixes and backward-compatible corrections
+- `minor` for new snippets, new capabilities, and backward-compatible features
+- `major` for breaking changes or major public milestones
+
+Recommended release flow:
+
+1. Merge `release/<version>` into `main`
+2. Create annotated tag on `main`
+3. Push `main` and the tag
+4. Merge the same release branch back into `develop`
+
 ## Commit convention
 
 Use Conventional Commits in English:
@@ -113,14 +145,20 @@ Recommended scopes:
 
 ## Documentation language
 
-The Marketplace-facing primary documentation should be in English.
+The repository should maintain documentation in both English and Spanish.
 
 Recommended structure:
 
-- `README.md` in English
-- `README.es.md` or separate Spanish docs as secondary documentation
+- `README.md` as the Marketplace-facing primary documentation in English
+- `README.es.md` as the Spanish companion for local and community support
 
-If the project keeps documentation in two languages, feature changes should update both or clearly note that the translation is pending.
+Rules:
+
+1. Keep both `README.md` and `README.es.md` when the project is published or prepared for publication.
+2. Treat `README.md` as the public Marketplace-facing source of truth.
+3. Treat `README.es.md` as the Spanish companion, not as a fork with different behavior.
+4. When a feature changes and both files exist, update both or clearly note that the translation is pending.
+5. Avoid introducing a feature only in one language without leaving an explicit note for follow-up.
 
 ## Validation
 

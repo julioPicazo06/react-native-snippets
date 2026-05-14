@@ -1,36 +1,36 @@
 # React Native Snippet Lab
 
-Spanish documentation: [README.es.md](./README.es.md)
+English documentation: [README.md](./README.md)
 
-`React Native Snippet Lab` is a Visual Studio Code extension built to make day-to-day React Native development faster and more consistent.
+`React Native Snippet Lab` es una extension para Visual Studio Code enfocada en acelerar el trabajo diario con React Native.
 
-It brings together two things that are usually split apart:
+Reune dos cosas que normalmente vienen separadas:
 
-- practical snippets for components, screens, navigation, hooks, forms, and lists
-- contextual style aliases for React Native properties such as `bg`, `c`, `px`, `py`, `ai`, and `jc`
+- snippets utiles para componentes, pantallas, navegacion, hooks, formularios y listas
+- autocompletado con aliases cortos para estilos de React Native como `bg`, `c`, `px`, `py`, `ai` y `jc`
 
-Instead of shipping generic boilerplate, the extension focuses on real app flows and helps reduce repetitive code when building screens, forms, lists, and navigation structures.
+En lugar de traer snippets demasiado genericos, esta extension busca resolver escenarios reales de app y reducir la cantidad de codigo repetitivo al crear pantallas, formularios, listas y estructuras de navegacion.
 
-It is designed for teams and solo developers who want faster scaffolding without losing control over naming, styling, or TypeScript ergonomics.
+Esta pensada tanto para equipos como para desarrolladores individuales que quieren generar estructura mas rapido sin perder control sobre nombres, estilos o ergonomia en TypeScript.
 
-## What It Includes
+## Que Incluye
 
-- Snippets for `javascript`, `javascriptreact`, `typescript`, and `typescriptreact`
-- Base React Native components and layouts
-- React Navigation snippets
-- Common screen hooks and reusable logic patterns
-- Controlled forms and `react-hook-form` patterns
-- Real list workflows with `FlatList`, `SectionList`, search, and empty states
-- Style aliases for writing faster inside React Native style objects
-- Context-aware suggestions so aliases only appear inside style props such as `style`, `contentContainerStyle`, inline style objects inside arrays, or `StyleSheet.create({})`
-- `styles.something` autocompletion inside style props, with automatic rule creation when the style does not exist yet
-- Optional cleanup for unused empty rules inside `StyleSheet.create`
-- Actions to extract inline styles into `StyleSheet.create`
-- An action to add missing React Native imports
+- Snippets para `javascript`, `javascriptreact`, `typescript` y `typescriptreact`
+- Componentes y layouts base de React Native
+- Snippets para React Navigation
+- Hooks comunes de pantalla y logica reutilizable
+- Formularios controlados y patrones con `react-hook-form`
+- Flujos reales de listas con `FlatList`, `SectionList`, busqueda y estados vacios
+- Aliases de estilos para escribir mas rapido dentro de objetos de estilo de React Native
+- Sugerencias contextuales para que los aliases solo aparezcan dentro de props de estilo como `style`, `contentContainerStyle`, estilos inline dentro de arrays o bloques de `StyleSheet.create({})`
+- Autocompletado de `styles.algo` dentro de props de estilo, con creacion automatica de la regla si todavia no existe
+- Limpieza opcional de reglas vacias sin uso dentro de `StyleSheet.create`
+- Acciones para extraer estilos inline a `StyleSheet.create`
+- Una accion para agregar imports faltantes de React Native
 
-## Included Style Aliases
+## Aliases de Estilos Incluidos
 
-These aliases expand common React Native properties and only appear in style contexts such as `style={{}}`, `contentContainerStyle={{}}`, `style={[styles.base, { ... }]}`, or nested rules inside `StyleSheet.create({})`:
+Estos aliases expanden propiedades comunes de React Native y solo aparecen en contextos de estilo como `style={{}}`, `contentContainerStyle={{}}`, `style={[styles.base, { ... }]}` o reglas internas de `StyleSheet.create({})`:
 
 - `bg` -> `backgroundColor`
 - `c` -> `color`
@@ -51,7 +51,7 @@ These aliases expand common React Native properties and only appear in style con
 - `w` -> `width`
 - `h` -> `height`
 
-There are also value-ready aliases for very common cases:
+Tambien existen aliases con valor listo para casos muy frecuentes:
 
 - `ai-c` -> `alignItems: 'center'`
 - `ai-fs` -> `alignItems: 'flex-start'`
@@ -77,13 +77,13 @@ There are also value-ready aliases for very common cases:
 - `tt-l` -> `textTransform: 'lowercase'`
 - `tt-u` -> `textTransform: 'uppercase'`
 
-Example: if you type `bg` and accept the suggestion, the extension inserts something like:
+Ejemplo: si escribes `bg` y aceptas la sugerencia, la extension inserta algo como:
 
 ```js
 backgroundColor: ,
 ```
 
-The same applies to other aliases:
+Lo mismo aplica para otros aliases:
 
 ```js
 paddingHorizontal: ,
@@ -91,7 +91,7 @@ justifyContent: ,
 alignItems: ,
 ```
 
-And value-ready aliases insert the full declaration:
+Y en los aliases con valor, la insercion ya sale completa:
 
 ```js
 justifyContent: 'space-between',
@@ -99,23 +99,23 @@ flexDirection: 'row',
 position: 'absolute',
 ```
 
-## `styles.something` References
+## Referencias `styles.algo`
 
-When you are typing inside a prop such as `style={}` or `style={[...]}`, the extension can also help you insert `styles` references.
+Cuando estas escribiendo dentro de un prop como `style={}` o `style={[...]}`, la extension tambien puede ayudarte a insertar referencias a `styles`.
 
-Example:
+Ejemplo:
 
 ```tsx
 <View style={card} />
 ```
 
-If you type `card` inside `style={}` and accept the suggestion, the extension can turn it into:
+Si escribes `card` dentro de `style={}` y aceptas la sugerencia, la extension puede convertirlo en:
 
 ```tsx
 <View style={styles.card} />
 ```
 
-And if the file already contains:
+Y si el archivo ya tiene un bloque:
 
 ```tsx
 const styles = StyleSheet.create({
@@ -125,7 +125,7 @@ const styles = StyleSheet.create({
 });
 ```
 
-the extension automatically adds the missing rule:
+la extension agrega automaticamente la regla faltante:
 
 ```tsx
 const styles = StyleSheet.create({
@@ -136,19 +136,19 @@ const styles = StyleSheet.create({
 });
 ```
 
-This also works inside arrays such as:
+Esto tambien funciona al escribir dentro de arreglos como:
 
 ```tsx
 <View style={[styles.container, card]} />
 ```
 
-to convert `card` into `styles.card` and create the empty rule in `StyleSheet.create` when needed.
+para convertir `card` en `styles.card` y crear la regla vacia en `StyleSheet.create` cuando haga falta.
 
-If the reference later disappears and the rule is still empty in compact form such as `card: {},`, the extension can clean it up automatically. That behavior can be enabled or disabled with `reactNativeSnippetLab.cleanupUnusedEmptyStyles`.
+Si despues desaparece la referencia y la regla sigue vacia en formato compacto como `card: {},`, la extension puede limpiarla automaticamente. Ese comportamiento se puede activar o desactivar con `reactNativeSnippetLab.cleanupUnusedEmptyStyles`.
 
-If the file does not contain any `StyleSheet.create(...)` yet, the extension can now create the whole block from scratch and add `StyleSheet` to the `react-native` import when needed.
+Si el archivo todavia no tiene ningun `StyleSheet.create(...)`, la extension ahora puede crear todo el bloque desde cero y agregar `StyleSheet` al import de `react-native` si hace falta.
 
-Example output:
+Ejemplo de salida:
 
 ```tsx
 import React from 'react';
@@ -163,19 +163,19 @@ const styles = StyleSheet.create({
 });
 ```
 
-## Productivity Actions
+## Acciones de Productividad
 
-The extension includes two useful actions from the context menu, command palette, or code actions.
+La extension incluye dos acciones utiles desde el menu contextual, command palette o code actions.
 
-### Extract Inline Style to `StyleSheet`
+### Extraer Inline Style a `StyleSheet`
 
-If you have something like:
+Si tienes algo como:
 
 ```tsx
 <View style={{ padding: 16, marginTop: 12 }} />
 ```
 
-you can use `Extract Inline Style to StyleSheet` to turn it into:
+puedes usar `Extraer Inline Style a StyleSheet` para convertirlo en:
 
 ```tsx
 <View style={styles.container} />
@@ -188,13 +188,13 @@ const styles = StyleSheet.create({
 });
 ```
 
-It also works on props that end in `Style`, such as `contentContainerStyle={{ ... }}`, `headerStyle={{ ... }}`, or `iconStyle={{ ... }}`.
+Tambien funciona en props que terminan en `Style`, por ejemplo `contentContainerStyle={{ ... }}`, `headerStyle={{ ... }}` o `iconStyle={{ ... }}`.
 
-The first version focuses on direct inline objects like `style={{ ... }}`. It does not yet try to extract arrays like `style={[base, { ... }]}` or more complex expressions.
+La primera version esta pensada para objetos inline directos como `style={{ ... }}`. Todavia no intenta extraer arreglos como `style={[base, { ... }]}` ni expresiones mas complejas.
 
-### Add Missing React Native Imports
+### Agregar Imports Faltantes de React Native
 
-The `Add Missing React Native Imports` action scans known identifiers used in the file and adds missing imports for common cases such as:
+La accion `Agregar Imports Faltantes de React Native` revisa identificadores conocidos usados en el archivo y agrega imports faltantes para casos comunes como:
 
 - `View`
 - `Text`
@@ -209,13 +209,13 @@ The `Add Missing React Native Imports` action scans known identifiers used in th
 - `useWindowDimensions`
 - `SafeAreaView`
 
-For `SafeAreaView`, the action imports from `react-native-safe-area-context`.
+En `SafeAreaView`, la accion importa desde `react-native-safe-area-context`.
 
-## Event Handlers
+## Handlers de Eventos
 
-Inside props such as `onPress={}`, `onChangeText={}`, or other props that start with `on`, the extension can help generate component handlers.
+Dentro de props como `onPress={}`, `onChangeText={}` u otras props que empiezan con `on`, la extension puede ayudarte a generar handlers del componente.
 
-It also recognizes special list and section callbacks such as:
+Tambien reconoce callbacks especiales de listas y secciones como:
 
 - `renderItem`
 - `keyExtractor`
@@ -226,13 +226,13 @@ It also recognizes special list and section callbacks such as:
 - `renderSectionHeader`
 - `renderSectionFooter`
 
-Example:
+Ejemplo:
 
 ```tsx
 <Pressable onPress={handleNavigateToPruebitas} />
 ```
 
-If `handleNavigateToPruebitas` does not exist yet, the extension can insert the reference and automatically create:
+Si `handleNavigateToPruebitas` todavia no existe, la extension puede insertar la referencia y crear automaticamente:
 
 ```tsx
 const handleNavigateToPruebitas = () => {
@@ -240,28 +240,28 @@ const handleNavigateToPruebitas = () => {
 };
 ```
 
-before the component `return`.
+antes del `return` del componente.
 
-For special callbacks it tries to create a more useful signature. For example:
+En callbacks especiales intenta crear una firma mas util. Por ejemplo:
 
 - `onChangeText` -> `const handleChange = (value) => {}`
 - `renderItem` -> `const renderItem = ({ item, index }) => { return null; }`
 - `keyExtractor` -> `const keyExtractor = (item, index) => { return item.id?.toString() ?? String(index); }`
 
-Color props such as `placeholderTextColor`, `selectionColor`, `underlineColorAndroid`, `thumbTintColor`, and `tintColor` also get quick value suggestions like `#hex`, `rgba`, or `transparent`.
+Props de color como `placeholderTextColor`, `selectionColor`, `underlineColorAndroid`, `thumbTintColor` y `tintColor` tambien reciben sugerencias rapidas de valores como `#hex`, `rgba` o `transparent`.
 
-## Type Synchronization in TypeScript
+## Sincronizacion de `type` en TypeScript
 
-In `ts` and `tsx` files, the extension can infer a `type` alias from typed constants using explicit actions.
+En archivos `ts` y `tsx`, la extension puede inferir un alias `type` a partir de constantes tipadas usando acciones explicitas.
 
-You can also use the editor context menu:
+Tambien puedes usar el menu contextual del editor:
 
-1. Right-click inside an object or array assigned to a `const`
-2. Choose `Type Object`
-3. The extension suggests a `type` name
-4. It creates the alias and adds the type annotation to the constant
+1. Haz click derecho dentro de un objeto o array asignado a un `const`
+2. Elige `Tipar Objeto`
+3. La extension sugiere un nombre de `type`
+4. Crea el alias y agrega el tipado a la constante
 
-Example:
+Ejemplo:
 
 ```tsx
 type Transaction = {
@@ -271,13 +271,13 @@ type Transaction = {
 const transactions: Transaction[] = [
   {
     id: '1',
-    title: 'Payroll',
+    title: 'Pago nomina',
     amount: '+$28,000',
   },
 ];
 ```
 
-When it detects new properties in the array objects, the extension can offer an action to complete the `type`:
+Al detectar nuevas propiedades en los objetos del arreglo, la extension puede ofrecer una accion para completar el `type`:
 
 ```tsx
 type Transaction = {
@@ -287,28 +287,28 @@ type Transaction = {
 };
 ```
 
-It also works with:
+Tambien funciona con:
 
 - `const item: Transaction = { ... }`
 - `const items: Transaction[] = [ ... ]`
-- `type Transaction = {}` when a typed constant using `Transaction` or `Transaction[]` already exists
+- `type Transaction = {}` cuando ya existe una constante tipada con `Transaction` o `Transaction[]`
 
-This first version is intentionally focused on simple and useful inference:
+Esta primera version esta pensada para inferencias simples y utiles:
 
 - strings -> `string`
-- numbers -> `number`
-- booleans -> `boolean`
+- numeros -> `number`
+- booleanos -> `boolean`
 - arrays -> `unknown[]`
-- objects -> `Record<string, unknown>`
-- fields such as `type`, `status`, `variant`, `kind`, or `mode` may become literal unions when only a few distinct values are detected
+- objetos -> `Record<string, unknown>`
+- campos como `type`, `status`, `variant`, `kind` o `mode` pueden inferirse como union de literales si detecta pocos valores distintos
 
-Autosync still exists as an option in `reactNativeSnippetLab.enableTypeSync`, but it is disabled by default so the main flow stays more controlled and less invasive.
+El autosync sigue existiendo como opcion en `reactNativeSnippetLab.enableTypeSync`, pero ahora viene apagado por defecto para que el flujo principal sea mas controlado y menos invasivo.
 
-## Snippet Catalog
+## Catalogo de Snippets
 
-For a more operational view of all available prefixes and a quick testing guide, check `SNIPPETS_CATALOG.md`.
+Para una vista mas operativa de todos los prefijos disponibles y una guia rapida de prueba, revisa `SNIPPETS_CATALOG.md`.
 
-### Components and Layout
+### Componentes y Layout
 
 - `rnfc`
 - `rnconst`
@@ -325,7 +325,7 @@ For a more operational view of all available prefixes and a quick testing guide,
 - `rnmodal`
 - `rnstyle`
 
-### Lists and UI States
+### Listas y Estados de UI
 
 - `rnitem`
 - `rnempty`
@@ -341,15 +341,15 @@ For a more operational view of all available prefixes and a quick testing guide,
 - `rnsearchlist`
 - `rnsection`
 
-Component and screen snippets use the current file name as the default component base name and leave it editable. For example, in a file named `user-profile.tsx`, the initial suggested name becomes `UserProfile`.
+Los snippets de componentes y pantallas toman por defecto el nombre del archivo como base del componente y lo dejan editable. Por ejemplo, en un archivo `user-profile.tsx` el nombre inicial sugerido sera `UserProfile`.
 
-The prefixes `rnview`, `rntext`, `rnpress`, `rninput`, `rnscroll`, `rnsafe`, `rnimage`, `rnmodal`, `rnitem`, `rnempty`, `rnloading`, `rnerror`, `rnskeleton`, `rnlistheader`, `rnsearchheader`, `rnsectionheader`, `rnlistempty`, and `rnrefresh` work as smart snippets: they insert JSX, add missing imports, create missing rules inside `StyleSheet.create` when needed, and help keep the rule name linked between `styles.something` and the stylesheet key while editing. If a base rule like `container` or `text` already exists, the snippet tries to use a new name instead of overwriting the previous one.
+Los prefijos `rnview`, `rntext`, `rnpress`, `rninput`, `rnscroll`, `rnsafe`, `rnimage`, `rnmodal`, `rnitem`, `rnempty`, `rnloading`, `rnerror`, `rnskeleton`, `rnlistheader`, `rnsearchheader`, `rnsectionheader`, `rnlistempty` y `rnrefresh` funcionan como snippets inteligentes: insertan el JSX, agregan imports faltantes, crean reglas faltantes dentro de `StyleSheet.create` cuando hace falta y ayudan a mantener enlazado el nombre entre `styles.algo` y la key del stylesheet mientras lo editas. Si una regla base como `container` o `text` ya existe, el snippet intenta usar un nombre nuevo en lugar de pisar la regla anterior.
 
-Style aliases and `styles` references also work in props ending in `Style`, not only `style`. That includes cases such as `contentContainerStyle`, `labelStyle`, `containerStyle`, `headerStyle`, `footerStyle`, `iconStyle`, `inputStyle`, `wrapperStyle`, `buttonStyle`, `titleStyle`, or `subtitleStyle`, so components like `ScrollView` and many UI libraries follow the same completion flow.
+Los aliases de estilos y las referencias `styles.algo` tambien funcionan en props que terminan en `Style`, no solo en `style`. Eso incluye casos como `contentContainerStyle`, `labelStyle`, `containerStyle`, `headerStyle`, `footerStyle`, `iconStyle`, `inputStyle`, `wrapperStyle`, `buttonStyle`, `titleStyle` o `subtitleStyle`, para que componentes como `ScrollView` y muchas librerias de UI sigan el mismo flujo de autocompletado.
 
-The `reactNativeSnippetLab.enableStyleAliases` setting only controls short aliases like `bg`, `px`, `jc`, or `ai`. Smart snippets, `styles.something` references, handlers, and other contextual helpers keep working even when that setting is disabled.
+La opcion `reactNativeSnippetLab.enableStyleAliases` solo controla aliases cortos como `bg`, `px`, `jc` o `ai`. Los snippets inteligentes, referencias `styles.algo`, handlers y otras ayudas contextuales siguen funcionando aunque esa opcion este apagada.
 
-Example `rnfc` output:
+Ejemplo de `rnfc`:
 
 ```tsx
 import React from 'react';
@@ -370,7 +370,7 @@ const styles = StyleSheet.create({
 });
 ```
 
-Example `rnconst` in JavaScript:
+Ejemplo de `rnconst` en JavaScript:
 
 ```jsx
 import React from 'react';
@@ -393,7 +393,7 @@ const styles = StyleSheet.create({
 });
 ```
 
-Example `rnconst` in TypeScript:
+Ejemplo de `rnconst` en TypeScript:
 
 ```tsx
 import React from 'react';
@@ -420,7 +420,7 @@ const styles = StyleSheet.create({
 });
 ```
 
-Example `rnexportconst`:
+Ejemplo de `rnexportconst`:
 
 ```tsx
 import React from 'react';
@@ -445,7 +445,7 @@ const styles = StyleSheet.create({
 });
 ```
 
-Example `rnscreen`:
+Ejemplo de `rnscreen`:
 
 ```tsx
 import React from 'react';
@@ -467,7 +467,7 @@ const styles = StyleSheet.create({
 });
 ```
 
-Example `rnpress`:
+Ejemplo de `rnpress`:
 
 ```tsx
 <Pressable style={styles.button} onPress={handlePress}>
@@ -485,13 +485,13 @@ Example `rnpress`:
 - `rnappstate`
 - `rnfocus`
 
-Example `rnstate`:
+Ejemplo de `rnstate`:
 
 ```tsx
 const [value, setValue] = React.useState(null);
 ```
 
-Example `rnhook`:
+Ejemplo de `rnhook`:
 
 ```tsx
 import React from 'react';
@@ -516,7 +516,7 @@ export function useFeatureName() {
 }
 ```
 
-Example `rnfocus`:
+Ejemplo de `rnfocus`:
 
 ```tsx
 useFocusEffect(
@@ -525,7 +525,7 @@ useFocusEffect(
 );
 ```
 
-### Navigation
+### Navegacion
 
 - `rnstack`
 - `rntabs`
@@ -533,7 +533,7 @@ useFocusEffect(
 - `rnroute`
 - `rnnavto`
 
-Example `rnstack`:
+Ejemplo de `rnstack`:
 
 ```tsx
 import React from 'react';
@@ -562,18 +562,18 @@ export default function AppNavigator() {
 }
 ```
 
-Example `rnnavto`:
+Ejemplo de `rnnavto`:
 
 ```tsx
 navigation.navigate('ScreenName', {});
 ```
 
-### Forms
+### Formularios
 
 - `rnform`
 - `rncontroller`
 
-Example `rnform`:
+Ejemplo de `rnform`:
 
 ```tsx
 import React from 'react';
@@ -627,7 +627,7 @@ export default function FormScreen() {
 }
 ```
 
-Example `rncontroller`:
+Ejemplo de `rncontroller`:
 
 ```tsx
 <Controller
@@ -651,14 +651,14 @@ Example `rncontroller`:
 />
 ```
 
-### Lists
+### Listas
 
 - `rnflat`
 - `rnsearchlist`
 - `rnsection`
 - `rnitem`
 
-Example `rnflat`:
+Ejemplo de `rnflat`:
 
 ```tsx
 const [data, setData] = React.useState([]);
@@ -695,7 +695,7 @@ React.useEffect(() => {
 />
 ```
 
-Example `rnsearchlist`:
+Ejemplo de `rnsearchlist`:
 
 ```tsx
 const [query, setQuery] = React.useState('');
@@ -728,7 +728,7 @@ const filteredData = data.filter((item) =>
 
 - `rnts`
 
-Example `rnts`:
+Ejemplo de `rnts`:
 
 ```tsx
 import React from 'react';
@@ -753,43 +753,43 @@ const styles = StyleSheet.create({
 });
 ```
 
-## How to Test the Extension
+## Como Probar la Extension
 
-1. Open this folder in Visual Studio Code.
-2. Press `F5` to open an `Extension Development Host` window.
-3. Inside that new window, open a `.js`, `.jsx`, `.ts`, or `.tsx` file.
-4. Type a prefix such as `rnfc`, `rnstack`, `rnform`, or `rnflat`.
-5. Accept the snippet and move across placeholders with `Tab`.
-6. Inside a style object, try aliases like `bg`, `px`, `ai`, or `jc`.
+1. Abre esta carpeta en Visual Studio Code.
+2. Presiona `F5` para abrir una ventana de `Extension Development Host`.
+3. Dentro de esa nueva ventana abre un archivo `.js`, `.jsx`, `.ts` o `.tsx`.
+4. Escribe un prefijo como `rnfc`, `rnstack`, `rnform` o `rnflat`.
+5. Acepta el snippet y navega entre placeholders con `Tab`.
+6. Dentro de un objeto de estilos prueba aliases como `bg`, `px`, `ai` o `jc`.
 
 ## Git Hooks
 
-The repository uses `husky` to validate commit messages with this format:
+El repositorio usa `husky` para validar mensajes de commit con el formato:
 
 ```text
 type(scope): description
 ```
 
-Valid examples:
+Ejemplos validos:
 
 - `feat(list): add smart empty state snippets`
 - `fix(style): avoid duplicate stylesheet placeholders`
 - `docs(readme): document commit hooks`
 
-Validation runs on `commit-msg` and follows the convention described in `CONTRIBUTING.md`.
+La validacion corre en `commit-msg` y sigue la convencion descrita en `CONTRIBUTING.md`.
 
-## Project Status
+## Estado del Proyecto
 
-The project already has a functional MVP with:
+Este repositorio ya tiene un MVP funcional con:
 
-- A base VS Code extension
-- Initial snippets for real React Native workflows
-- Style alias autocompletion
-- Minimal configuration to test the extension locally
+- Una extension base de VS Code
+- Snippets iniciales para flujos reales de React Native
+- Autocompletado de aliases de estilos
+- Configuracion minima para probar la extension localmente
 
-## Suggested Next Steps
+## Siguientes Pasos Sugeridos
 
-- Add custom aliases through VS Code configuration
-- Add snippets for storage, API consumption, and error handling
-- Create stricter TypeScript variants for navigation and props
-- Package the extension as a `.vsix`
+- Agregar aliases personalizados desde la configuracion de VS Code
+- Agregar snippets para almacenamiento, consumo de APIs y manejo de errores
+- Crear variantes TypeScript mas estrictas para navegacion y props
+- Empaquetar la extension como `.vsix`
