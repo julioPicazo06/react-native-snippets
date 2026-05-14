@@ -88,6 +88,14 @@ Before suggesting or creating a commit:
 2. Choose the narrowest useful scope.
 3. Prefer English wording even if the conversation with the user is in Spanish.
 
+Branch usage rules:
+
+1. Start new product work from `develop` using `feature/*`.
+2. Start non-urgent fixes from `develop` using `fix/*`.
+3. Cut `release/<version>` from `develop` only when preparing a real release candidate.
+4. Cut `hotfix/*` from `main` only for urgent production issues.
+5. After a release or hotfix, make sure changes flow back into `develop`.
+
 ## Validation
 
 After changes:
