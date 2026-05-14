@@ -36,6 +36,43 @@ Recommended examples:
 - `release/0.1.0`
 - `hotfix/import-safe-area-view`
 
+## Protected branch restrictions
+
+For now, treat these branches as protected workflow branches:
+
+- `main`
+- `develop`
+- `release/*`
+
+Rules:
+
+1. Do not commit directly to `main`.
+2. Do not push code directly to `main`.
+3. Do not merge into `main` without an explicit release or hotfix decision.
+4. Do not push feature work directly to `develop`; use `feature/*` or `fix/*` first.
+5. Do not use `release/*` for regular feature development.
+6. Do not force-push protected branches.
+7. Do not delete protected branches without explicit approval.
+
+## Automation restrictions
+
+Until the repository has full branch protections configured remotely, automated agents should follow these extra restrictions:
+
+1. Do not commit or push to `main` automatically.
+2. Do not commit or push to `develop` automatically unless the user explicitly asks for it.
+3. Do not create or publish `release/*` or `hotfix/*` branches automatically unless the user explicitly asks for it.
+4. Do not merge branches automatically.
+5. Do not tag releases automatically.
+6. Do not rewrite history on shared branches.
+7. Before any commit or push, summarize the branch, scope, and target branch clearly.
+
+Recommended current working policy:
+
+- regular work -> `feature/*`
+- bug fixes -> `fix/*`
+- release preparation -> `release/*`
+- production emergencies -> `hotfix/*`
+
 ## Commit convention
 
 Use Conventional Commits in English:

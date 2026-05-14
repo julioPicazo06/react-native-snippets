@@ -95,6 +95,13 @@ Branch usage rules:
 3. Cut `release/<version>` from `develop` only when preparing a real release candidate.
 4. Cut `hotfix/*` from `main` only for urgent production issues.
 5. After a release or hotfix, make sure changes flow back into `develop`.
+6. Treat `main`, `develop`, and `release/*` as protected workflow branches.
+7. Do not commit or push directly to `main`.
+8. Do not commit or push to `develop`, `release/*`, or `hotfix/*` unless the user explicitly asks for it.
+9. Do not merge branches automatically.
+10. Do not create tags automatically.
+11. Do not force-push shared branches.
+12. Before any commit or push, state the branch and target clearly.
 
 ## Validation
 
