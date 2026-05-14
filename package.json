@@ -26,22 +26,88 @@
   ],
   "main": "./src/extension.js",
   "contributes": {
+    "commands": [
+      {
+        "command": "reactNativeSnippetLab.extractInlineStyle",
+        "title": "Extraer Inline Style a StyleSheet",
+        "category": "React Native Snippet Lab"
+      },
+      {
+        "command": "reactNativeSnippetLab.addMissingReactNativeImports",
+        "title": "Agregar Imports Faltantes de React Native",
+        "category": "React Native Snippet Lab"
+      },
+      {
+        "command": "reactNativeSnippetLab.typeObjectFromContext",
+        "title": "Tipar Objeto",
+        "category": "React Native Snippet Lab"
+      }
+    ],
+    "menus": {
+      "editor/context": [
+        {
+          "command": "reactNativeSnippetLab.extractInlineStyle",
+          "when": "editorTextFocus && editorLangId =~ /javascriptreact|typescriptreact/",
+          "group": "navigation@18"
+        },
+        {
+          "command": "reactNativeSnippetLab.addMissingReactNativeImports",
+          "when": "editorTextFocus && editorLangId =~ /javascript|javascriptreact|typescript|typescriptreact/",
+          "group": "navigation@19"
+        },
+        {
+          "command": "reactNativeSnippetLab.typeObjectFromContext",
+          "when": "editorTextFocus && editorLangId =~ /typescript|typescriptreact/",
+          "group": "navigation@20"
+        }
+      ],
+      "commandPalette": [
+        {
+          "command": "reactNativeSnippetLab.extractInlineStyle",
+          "when": "editorLangId =~ /javascriptreact|typescriptreact/"
+        },
+        {
+          "command": "reactNativeSnippetLab.addMissingReactNativeImports",
+          "when": "editorLangId =~ /javascript|javascriptreact|typescript|typescriptreact/"
+        },
+        {
+          "command": "reactNativeSnippetLab.typeObjectFromContext",
+          "when": "editorLangId =~ /typescript|typescriptreact/"
+        }
+      ]
+    },
     "snippets": [
       {
         "language": "javascript",
         "path": "./snippets/react-native-snippets.json"
       },
       {
+        "language": "javascript",
+        "path": "./snippets/react-native-js-snippets.json"
+      },
+      {
         "language": "javascriptreact",
         "path": "./snippets/react-native-snippets.json"
+      },
+      {
+        "language": "javascriptreact",
+        "path": "./snippets/react-native-js-snippets.json"
       },
       {
         "language": "typescript",
         "path": "./snippets/react-native-snippets.json"
       },
       {
+        "language": "typescript",
+        "path": "./snippets/react-native-ts-snippets.json"
+      },
+      {
         "language": "typescriptreact",
         "path": "./snippets/react-native-snippets.json"
+      },
+      {
+        "language": "typescriptreact",
+        "path": "./snippets/react-native-ts-snippets.json"
       }
     ],
     "configuration": {
@@ -51,11 +117,26 @@
           "type": "boolean",
           "default": true,
           "description": "Enable style alias completions such as bg, c, px and py."
+        },
+        "reactNativeSnippetLab.enableTypeSync": {
+          "type": "boolean",
+          "default": false,
+          "description": "Automatically synchronize TypeScript type aliases from typed object literals and arrays."
+        },
+        "reactNativeSnippetLab.cleanupUnusedEmptyStyles": {
+          "type": "boolean",
+          "default": true,
+          "description": "Automatically remove compact empty StyleSheet rules like `card: {},` when they no longer have any `styles.card` references."
         }
       }
     }
   },
   "scripts": {
-    "check": "node --check src/extension.js"
+    "check": "node --check src/extension.js",
+    "prepare": "husky",
+    "check:commit-msg": "node scripts/validate-commit-msg.js"
+  },
+  "devDependencies": {
+    "husky": "^9.1.7"
   }
 }

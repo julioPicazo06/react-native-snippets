@@ -7,117 +7,13 @@
       "import React from 'react';",
       "import { StyleSheet, Text, View } from 'react-native';",
       "",
-      "export default function ${1:ComponentName}() {",
+      "export default function ${1:${TM_FILENAME_BASE/(^|[-_\\.\\s])(\\w)/${2:/upcase}/g}}() {",
       "  return (",
       "    <View style={styles.container}>",
-      "      <Text>${2:ComponentName}</Text>",
+      "      <Text>${2:${1}}</Text>",
       "    </View>",
       "  );",
       "}",
-      "",
-      "const styles = StyleSheet.create({",
-      "  container: {",
-      "    flex: 1,",
-      "  },",
-      "});"
-    ]
-  },
-  "React Native Const Component JS": {
-    "scope": "javascript,javascriptreact",
-    "prefix": "rnconst",
-    "description": "Create a React Native const component with StyleSheet.",
-    "body": [
-      "import React from 'react';",
-      "import { StyleSheet, Text, View } from 'react-native';",
-      "",
-      "const ${1:ComponentName} = (${2:props}) => {",
-      "  return (",
-      "    <View style={styles.container}>",
-      "      <Text>${3:ComponentName}</Text>",
-      "    </View>",
-      "  );",
-      "};",
-      "",
-      "export default ${1:ComponentName};",
-      "",
-      "const styles = StyleSheet.create({",
-      "  container: {",
-      "    flex: 1,",
-      "  },",
-      "});"
-    ]
-  },
-  "React Native Const Component TS": {
-    "scope": "typescript,typescriptreact",
-    "prefix": "rnconst",
-    "description": "Create a typed React Native const component with StyleSheet.",
-    "body": [
-      "import React from 'react';",
-      "import { StyleSheet, Text, View } from 'react-native';",
-      "",
-      "type ${1:ComponentName}Props = {",
-      "  ${2:title}: string;",
-      "};",
-      "",
-      "const ${1:ComponentName} = ({ ${2:title} }: ${1:ComponentName}Props) => {",
-      "  return (",
-      "    <View style={styles.container}>",
-      "      <Text>{${2:title}}</Text>",
-      "    </View>",
-      "  );",
-      "};",
-      "",
-      "export default ${1:ComponentName};",
-      "",
-      "const styles = StyleSheet.create({",
-      "  container: {",
-      "    flex: 1,",
-      "  },",
-      "});"
-    ]
-  },
-  "React Native Export Const Component JS": {
-    "scope": "javascript,javascriptreact",
-    "prefix": "rnexportconst",
-    "description": "Create an exported React Native const component with StyleSheet.",
-    "body": [
-      "import React from 'react';",
-      "import { StyleSheet, Text, View } from 'react-native';",
-      "",
-      "export const ${1:ComponentName} = (${2:props}) => {",
-      "  return (",
-      "    <View style={styles.container}>",
-      "      <Text>${3:ComponentName}</Text>",
-      "    </View>",
-      "  );",
-      "};",
-      "",
-      "const styles = StyleSheet.create({",
-      "  container: {",
-      "    flex: 1,",
-      "  },",
-      "});"
-    ]
-  },
-  "React Native Export Const Component TS": {
-    "scope": "typescript,typescriptreact",
-    "prefix": "rnexportconst",
-    "description": "Create an exported typed React Native const component with StyleSheet.",
-    "body": [
-      "import React from 'react';",
-      "import { StyleSheet, Text, View } from 'react-native';",
-      "",
-      "type ${1:ComponentName}Props = {",
-      "  ${2:title}: string;",
-      "};",
-      "",
-      "export const ${1:ComponentName} = ({ ${2:title} }: ${1:ComponentName}Props) => {",
-      "  return (",
-      "    <View style={styles.container}>",
-      "      <Text>{${2:title}}</Text>",
-      "    </View>",
-      "  );",
-      "};",
       "",
       "const styles = StyleSheet.create({",
       "  container: {",
@@ -132,12 +28,13 @@
     "description": "Create a screen component with SafeAreaView.",
     "body": [
       "import React from 'react';",
-      "import { SafeAreaView, StyleSheet, Text } from 'react-native';",
+      "import { StyleSheet, Text } from 'react-native';",
+      "import { SafeAreaView } from 'react-native-safe-area-context';",
       "",
-      "export default function ${1:ScreenName}() {",
+      "export default function ${1:${TM_FILENAME_BASE/(^|[-_\\.\\s])(\\w)/${2:/upcase}/g}}() {",
       "  return (",
       "    <SafeAreaView style={styles.container}>",
-      "      <Text>${2:ScreenName}</Text>",
+      "      <Text>${2:${1}}</Text>",
       "    </SafeAreaView>",
       "  );",
       "}",
@@ -147,57 +44,6 @@
       "    flex: 1,",
       "  },",
       "});"
-    ]
-  },
-  "React Native View": {
-    "scope": "javascript,javascriptreact,typescript,typescriptreact",
-    "prefix": "rnview",
-    "description": "Insert a styled View.",
-    "body": [
-      "<View style={styles.${1:container}}>",
-      "  ${2}",
-      "</View>"
-    ]
-  },
-  "React Native Text": {
-    "scope": "javascript,javascriptreact,typescript,typescriptreact",
-    "prefix": "rntext",
-    "description": "Insert a styled Text.",
-    "body": [
-      "<Text style={styles.${1:text}}>${2:Label}</Text>"
-    ]
-  },
-  "React Native Pressable": {
-    "scope": "javascript,javascriptreact,typescript,typescriptreact",
-    "prefix": "rnpress",
-    "description": "Insert a Pressable button block.",
-    "body": [
-      "<Pressable style={styles.${1:button}} onPress={${2:handlePress}}>",
-      "  <Text style={styles.${3:buttonText}}>${4:Press me}</Text>",
-      "</Pressable>"
-    ]
-  },
-  "React Native TextInput": {
-    "scope": "javascript,javascriptreact,typescript,typescriptreact",
-    "prefix": "rninput",
-    "description": "Insert a TextInput.",
-    "body": [
-      "<TextInput",
-      "  value={${1:value}}",
-      "  onChangeText={${2:setValue}}",
-      "  placeholder=\"${3:Type here}\"",
-      "  style={styles.${4:input}}",
-      "/>"
-    ]
-  },
-  "React Native ScrollView": {
-    "scope": "javascript,javascriptreact,typescript,typescriptreact",
-    "prefix": "rnscroll",
-    "description": "Insert a ScrollView.",
-    "body": [
-      "<ScrollView contentContainerStyle={styles.${1:content}}>",
-      "  ${2}",
-      "</ScrollView>"
     ]
   },
   "React Native FlatList": {
@@ -214,31 +60,6 @@
       "    </View>",
       "  )}",
       "/>"
-    ]
-  },
-  "React Native Image": {
-    "scope": "javascript,javascriptreact,typescript,typescriptreact",
-    "prefix": "rnimage",
-    "description": "Insert an Image component.",
-    "body": [
-      "<Image",
-      "  source={{ uri: '${1:https://example.com/image.png}' }}",
-      "  style={styles.${2:image}}",
-      "/>"
-    ]
-  },
-  "React Native Modal": {
-    "scope": "javascript,javascriptreact,typescript,typescriptreact",
-    "prefix": "rnmodal",
-    "description": "Insert a Modal scaffold.",
-    "body": [
-      "<Modal visible={${1:isVisible}} transparent animationType=\"slide\">",
-      "  <View style={styles.${2:overlay}}>",
-      "    <View style={styles.${3:modal}}>",
-      "      ${4}",
-      "    </View>",
-      "  </View>",
-      "</Modal>"
     ]
   },
   "React useState": {
@@ -628,46 +449,6 @@
       "    </View>",
       "  )}",
       "/>"
-    ]
-  },
-  "React Native List Item": {
-    "scope": "javascript,javascriptreact,typescript,typescriptreact",
-    "prefix": "rnitem",
-    "description": "Insert a reusable list item row.",
-    "body": [
-      "<Pressable style={styles.${1:item}} onPress={() => ${2}}> ",
-      "  <View style={styles.${3:content}}>",
-      "    <Text style={styles.${4:title}}>${5:Title}</Text>",
-      "    <Text style={styles.${6:subtitle}}>${7:Subtitle}</Text>",
-      "  </View>",
-      "</Pressable>"
-    ]
-  },
-  "React Native TS Component": {
-    "scope": "typescript,typescriptreact",
-    "prefix": "rnts",
-    "description": "Create a typed React Native component.",
-    "body": [
-      "import React from 'react';",
-      "import { StyleSheet, Text, View } from 'react-native';",
-      "",
-      "type ${1:ComponentName}Props = {",
-      "  ${2:title}: string;",
-      "};",
-      "",
-      "export default function ${1:ComponentName}({ ${2:title} }: ${1:ComponentName}Props) {",
-      "  return (",
-      "    <View style={styles.container}>",
-      "      <Text>{${2:title}}</Text>",
-      "    </View>",
-      "  );",
-      "}",
-      "",
-      "const styles = StyleSheet.create({",
-      "  container: {",
-      "    flex: 1,",
-      "  },",
-      "});"
     ]
   }
 }

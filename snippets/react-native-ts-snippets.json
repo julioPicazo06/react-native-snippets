@@ -1,0 +1,82 @@
+{
+  "React Native Const Component TS": {
+    "prefix": "rnconst",
+    "description": "Create a typed React Native const component with StyleSheet.",
+    "body": [
+      "import React from 'react';",
+      "import { StyleSheet, Text, View } from 'react-native';",
+      "",
+      "type ${1:${TM_FILENAME_BASE/(^|[-_\\.\\s])(\\w)/${2:/upcase}/g}}Props = {",
+      "  ${2:title}: string;",
+      "};",
+      "",
+      "const ${1} = ({ ${2:title} }: ${1}Props) => {",
+      "  return (",
+      "    <View style={styles.container}>",
+      "      <Text>{${2:title}}</Text>",
+      "    </View>",
+      "  );",
+      "};",
+      "",
+      "export default ${1};",
+      "",
+      "const styles = StyleSheet.create({",
+      "  container: {",
+      "    flex: 1,",
+      "  },",
+      "});"
+    ]
+  },
+  "React Native Export Const Component TS": {
+    "prefix": "rnexportconst",
+    "description": "Create an exported typed React Native const component with StyleSheet.",
+    "body": [
+      "import React from 'react';",
+      "import { StyleSheet, Text, View } from 'react-native';",
+      "",
+      "type ${1:${TM_FILENAME_BASE/(^|[-_\\.\\s])(\\w)/${2:/upcase}/g}}Props = {",
+      "  ${2:title}: string;",
+      "};",
+      "",
+      "export const ${1} = ({ ${2:title} }: ${1}Props) => {",
+      "  return (",
+      "    <View style={styles.container}>",
+      "      <Text>{${2:title}}</Text>",
+      "    </View>",
+      "  );",
+      "};",
+      "",
+      "const styles = StyleSheet.create({",
+      "  container: {",
+      "    flex: 1,",
+      "  },",
+      "});"
+    ]
+  },
+  "React Native TS Component": {
+    "prefix": "rnts",
+    "description": "Create a typed React Native component.",
+    "body": [
+      "import React from 'react';",
+      "import { StyleSheet, Text, View } from 'react-native';",
+      "",
+      "type ${1:${TM_FILENAME_BASE/(^|[-_\\.\\s])(\\w)/${2:/upcase}/g}}Props = {",
+      "  ${2:title}: string;",
+      "};",
+      "",
+      "export default function ${1}({ ${2:title} }: ${1}Props) {",
+      "  return (",
+      "    <View style={styles.container}>",
+      "      <Text>{${2:title}}</Text>",
+      "    </View>",
+      "  );",
+      "}",
+      "",
+      "const styles = StyleSheet.create({",
+      "  container: {",
+      "    flex: 1,",
+      "  },",
+      "});"
+    ]
+  }
+}

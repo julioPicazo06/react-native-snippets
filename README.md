@@ -20,6 +20,9 @@ En lugar de traer snippets demasiado genericos, esta extension busca resolver es
 - Aliases de estilos para escribir mas rapido dentro de objetos de estilo
 - Sugerencias contextuales para que los aliases aparezcan solo dentro de props de estilo como `style`, `contentContainerStyle`, estilos inline dentro de arrays, o bloques de `StyleSheet.create({})`
 - Autocompletado de referencias tipo `styles.algo` dentro de props `style`, con creacion automatica de la regla si todavia no existe
+- Limpieza opcional de reglas vacias sin uso dentro de `StyleSheet.create`
+- Acciones para extraer estilos inline a `StyleSheet.create`
+- Accion para agregar imports faltantes de React Native
 
 ## Aliases de estilos incluidos
 
@@ -44,6 +47,32 @@ Estos aliases expanden propiedades comunes de React Native y ahora se muestran s
 - `w` -> `width`
 - `h` -> `height`
 
+Tambien existen aliases con valor listo para casos muy frecuentes:
+
+- `ai-c` -> `alignItems: 'center'`
+- `ai-fs` -> `alignItems: 'flex-start'`
+- `ai-fe` -> `alignItems: 'flex-end'`
+- `d-f` -> `display: 'flex'`
+- `d-n` -> `display: 'none'`
+- `fd-c` -> `flexDirection: 'column'`
+- `fd-r` -> `flexDirection: 'row'`
+- `jc-c` -> `justifyContent: 'center'`
+- `jc-fs` -> `justifyContent: 'flex-start'`
+- `jc-fe` -> `justifyContent: 'flex-end'`
+- `jc-sa` -> `justifyContent: 'space-around'`
+- `jc-sb` -> `justifyContent: 'space-between'`
+- `jc-se` -> `justifyContent: 'space-evenly'`
+- `ov-h` -> `overflow: 'hidden'`
+- `ov-s` -> `overflow: 'scroll'`
+- `pos-a` -> `position: 'absolute'`
+- `pos-r` -> `position: 'relative'`
+- `ta-c` -> `textAlign: 'center'`
+- `ta-l` -> `textAlign: 'left'`
+- `ta-r` -> `textAlign: 'right'`
+- `tt-c` -> `textTransform: 'capitalize'`
+- `tt-l` -> `textTransform: 'lowercase'`
+- `tt-u` -> `textTransform: 'uppercase'`
+
 Ejemplo: si escribes `bg` y aceptas la sugerencia, la extension inserta algo como:
 
 ```js
@@ -56,6 +85,14 @@ Lo mismo aplica para otros aliases:
 paddingHorizontal: ,
 justifyContent: ,
 alignItems: ,
+```
+
+Y en los aliases con valor, la insercion ya sale completa:
+
+```js
+justifyContent: 'space-between',
+flexDirection: 'row',
+position: 'absolute',
 ```
 
 ## Referencias `styles.algo`
@@ -104,6 +141,8 @@ Esto tambien funciona al escribir dentro de arreglos como:
 
 para convertir `card` en `styles.card` y, si hace falta, crear la regla vacia en `StyleSheet.create`.
 
+Si despues desaparece la referencia y la regla sigue vacia en formato compacto como `card: {},`, la extension tambien puede limpiarla automaticamente. Ese comportamiento se puede activar o desactivar con la configuracion `reactNativeSnippetLab.cleanupUnusedEmptyStyles`.
+
 Si el archivo todavia no tiene ningun `StyleSheet.create(...)`, la extension ahora puede crear todo el bloque desde cero y agregar `StyleSheet` al import de `react-native` si hace falta.
 
 Ejemplo de salida:
@@ -122,7 +161,150 @@ const styles = StyleSheet.create({
 });
 ```
 
+## Acciones de productividad
+
+La extension ahora incluye dos acciones utiles desde click derecho, command palette o code actions:
+
+### Extraer inline style a `StyleSheet`
+
+Si tienes algo como:
+
+```tsx
+<View style={{ padding: 16, marginTop: 12 }} />
+```
+
+puedes usar `Extraer Inline Style a StyleSheet` para convertirlo en:
+
+```tsx
+<View style={styles.container} />
+
+const styles = StyleSheet.create({
+  container: {
+    padding: 16,
+    marginTop: 12,
+  },
+});
+```
+
+Tambien funciona en props que terminan en `Style`, por ejemplo `contentContainerStyle={{ ... }}`, `headerStyle={{ ... }}` o `iconStyle={{ ... }}`.
+
+La primera version esta pensada para objetos inline directos como `style={{ ... }}`. Todavia no intenta extraer arreglos como `style={[base, { ... }]}` ni expresiones mas complejas.
+
+### Agregar imports faltantes de React Native
+
+La accion `Agregar Imports Faltantes de React Native` revisa componentes e identificadores conocidos usados en el archivo y agrega imports que falten para casos comunes como:
+
+- `View`
+- `Text`
+- `Pressable`
+- `TextInput`
+- `ScrollView`
+- `FlatList`
+- `SectionList`
+- `Image`
+- `Modal`
+- `AppState`
+- `useWindowDimensions`
+- `SafeAreaView`
+
+En `SafeAreaView`, la accion usa `react-native-safe-area-context`.
+
+## Handlers de eventos
+
+Dentro de props como `onPress={}`, `onChangeText={}` u otras props que empiezan con `on`, la extension tambien puede ayudarte con handlers del componente.
+
+Tambien reconoce algunos callbacks especiales de listas y secciones, por ejemplo:
+
+- `renderItem`
+- `keyExtractor`
+- `ListEmptyComponent`
+- `ListHeaderComponent`
+- `ListFooterComponent`
+- `ItemSeparatorComponent`
+- `renderSectionHeader`
+- `renderSectionFooter`
+
+Ejemplo:
+
+```tsx
+<Pressable onPress={handleNavigateToPruebitas} />
+```
+
+Si `handleNavigateToPruebitas` no existe todavia, la extension puede insertar la referencia y crear automaticamente:
+
+```tsx
+const handleNavigateToPruebitas = () => {
+  
+};
+```
+
+antes del `return` del componente.
+
+En esos casos especiales intenta crear una firma mas util. Por ejemplo:
+
+- `onChangeText` -> `const handleChange = (value) => {}`
+- `renderItem` -> `const renderItem = ({ item, index }) => { return null; }`
+- `keyExtractor` -> `const keyExtractor = (item, index) => { return item.id?.toString() ?? String(index); }`
+
+Ademas, props de color como `placeholderTextColor`, `selectionColor`, `underlineColorAndroid`, `thumbTintColor` y `tintColor` ahora reciben sugerencias rapidas de valores como `#hex`, `rgba` o `transparent`.
+
+## Sincronizacion de `type` en TypeScript
+
+En archivos `ts` y `tsx`, la extension ahora puede inferir un alias `type` a partir de constantes tipadas usando acciones explicitas.
+
+Tambien puedes usar el menu contextual del editor:
+
+1. Haz click derecho dentro de un objeto o array asignado a un `const`
+2. Elige `Tipar Objeto`
+3. La extension sugiere un nombre de `type`
+4. Crea el alias y agrega el tipado a la constante
+
+Ejemplo:
+
+```tsx
+type Transaction = {
+  id: string;
+};
+
+const transactions: Transaction[] = [
+  {
+    id: '1',
+    title: 'Pago nomina',
+    amount: '+$28,000',
+  },
+];
+```
+
+al detectar nuevas propiedades en los objetos del arreglo, la extension puede ofrecer una accion para completar el `type`:
+
+```tsx
+type Transaction = {
+  id: string;
+  title: string;
+  amount: string;
+};
+```
+
+Tambien funciona con:
+
+- `const item: Transaction = { ... }`
+- `const items: Transaction[] = [ ... ]`
+- `type Transaction = {}` cuando ya existe una constante tipada con `Transaction` o `Transaction[]`
+
+Esta primera version esta pensada para inferencias simples y utiles:
+
+- strings -> `string`
+- numeros -> `number`
+- booleanos -> `boolean`
+- arrays -> `unknown[]`
+- objetos -> `Record<string, unknown>`
+- campos como `type`, `status`, `variant`, `kind` o `mode` pueden inferirse como union de literales si detecta pocos valores distintos
+
+El autosync sigue existiendo como opcion en `reactNativeSnippetLab.enableTypeSync`, pero ahora viene apagado por defecto para que el flujo principal sea mas controlado y menos invasivo.
+
 ## Catalogo de snippets
+
+Para una vista mas operativa de todos los prefijos disponibles y una guia rapida de prueba, revisa `SNIPPETS_CATALOG.md`.
 
 ### Componentes y layout
 
@@ -135,10 +317,35 @@ const styles = StyleSheet.create({
 - `rnpress`
 - `rninput`
 - `rnscroll`
+- `rnsafe`
 - `rnlist`
 - `rnimage`
 - `rnmodal`
 - `rnstyle`
+
+### Listas y estados de UI
+
+- `rnitem`
+- `rnempty`
+- `rnloading`
+- `rnerror`
+- `rnskeleton`
+- `rnlistheader`
+- `rnsearchheader`
+- `rnsectionheader`
+- `rnlistempty`
+- `rnrefresh`
+- `rnflat`
+- `rnsearchlist`
+- `rnsection`
+
+Los snippets de componentes y pantallas toman por defecto el nombre del archivo como base del componente y lo dejan editable. Por ejemplo, en un archivo `user-profile.tsx` el nombre inicial sugerido sera `UserProfile`.
+
+Los prefijos `rnview`, `rntext`, `rnpress`, `rninput`, `rnscroll`, `rnsafe`, `rnimage`, `rnmodal`, `rnitem`, `rnempty`, `rnloading`, `rnerror`, `rnskeleton`, `rnlistheader`, `rnsearchheader`, `rnsectionheader`, `rnlistempty` y `rnrefresh` ahora funcionan como snippets inteligentes: insertan el JSX, agregan los imports que falten, crean las reglas faltantes en `StyleSheet.create` cuando aplica y ayudan a mantener enlazado el nombre entre `styles.algo` y la key del stylesheet cuando lo editas. Si una regla base como `container` o `text` ya existe, el snippet intenta usar un nombre nuevo para no pisar la regla anterior.
+
+Los aliases y referencias de estilos tambien funcionan en props que terminan en `Style`, no solo en `style`. Eso incluye casos como `contentContainerStyle`, `labelStyle`, `containerStyle`, `headerStyle`, `footerStyle`, `iconStyle`, `inputStyle`, `wrapperStyle`, `buttonStyle`, `titleStyle` o `subtitleStyle`, para que componentes como `ScrollView` y muchos componentes de UI sigan teniendo el mismo flujo de autocompletado.
+
+La opcion `reactNativeSnippetLab.enableStyleAliases` solo controla aliases cortos como `bg`, `px`, `jc` o `ai`. Los snippets inteligentes, referencias `styles.algo`, handlers y otras ayudas contextuales siguen funcionando aunque esa opcion este apagada.
 
 Ejemplo de `rnfc`:
 
@@ -240,7 +447,8 @@ Ejemplo de `rnscreen`:
 
 ```tsx
 import React from 'react';
-import { SafeAreaView, StyleSheet, Text } from 'react-native';
+import { StyleSheet, Text } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 export default function ScreenName() {
   return (
@@ -551,6 +759,22 @@ const styles = StyleSheet.create({
 4. Escribe un prefijo como `rnfc`, `rnstack`, `rnform` o `rnflat`.
 5. Acepta el snippet y navega entre placeholders con `Tab`.
 6. Dentro de un objeto de estilos prueba aliases como `bg`, `px`, `ai` o `jc`.
+
+## Git hooks
+
+El repositorio usa `husky` para validar mensajes de commit con el formato:
+
+```text
+type(scope): description
+```
+
+Ejemplos validos:
+
+- `feat(list): add smart empty state snippets`
+- `fix(style): avoid duplicate stylesheet placeholders`
+- `docs(readme): document commit hooks`
+
+La validacion corre en `commit-msg` y sigue la convencion descrita en `CONTRIBUTING.md`.
 
 ## En que estado va el proyecto
 
