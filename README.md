@@ -211,6 +211,8 @@ The `Add Missing React Native Imports` action scans known identifiers used in th
 
 For `SafeAreaView`, the action imports from `react-native-safe-area-context`.
 
+When a known React Native symbol has already been imported from the wrong module by mistake, the same import flow now tries to move it back to its canonical source instead of leaving conflicting imports behind.
+
 ## Event Handlers
 
 Inside props such as `onPress={}`, `onChangeText={}`, or other props that start with `on`, the extension can help generate component handlers.
@@ -235,12 +237,13 @@ Example:
 If `handleNavigateToPruebitas` does not exist yet, the extension can insert the reference and automatically create:
 
 ```tsx
+
 const handleNavigateToPruebitas = () => {
   
 };
 ```
 
-before the component `return`.
+before the component `return`, keeping an empty line between the helper and the JSX block.
 
 For special callbacks it tries to create a more useful signature. For example:
 
@@ -308,6 +311,10 @@ Autosync still exists as an option in `reactNativeSnippetLab.enableTypeSync`, bu
 
 For a more operational view of all available prefixes and a quick testing guide, check `SNIPPETS_CATALOG.md`.
 
+For release-oriented manual QA, use `TESTING.md`.
+
+For release notes and published changes, use `CHANGELOG.md`.
+
 ### Components and Layout
 
 - `rnfc`
@@ -328,6 +335,7 @@ For a more operational view of all available prefixes and a quick testing guide,
 ### Lists and UI States
 
 - `rnitem`
+- `rnlistitem`
 - `rnempty`
 - `rnloading`
 - `rnerror`
@@ -343,7 +351,7 @@ For a more operational view of all available prefixes and a quick testing guide,
 
 Component and screen snippets use the current file name as the default component base name and leave it editable. For example, in a file named `user-profile.tsx`, the initial suggested name becomes `UserProfile`.
 
-The prefixes `rnview`, `rntext`, `rnpress`, `rninput`, `rnscroll`, `rnsafe`, `rnimage`, `rnmodal`, `rnitem`, `rnempty`, `rnloading`, `rnerror`, `rnskeleton`, `rnlistheader`, `rnsearchheader`, `rnsectionheader`, `rnlistempty`, and `rnrefresh` work as smart snippets: they insert JSX, add missing imports, create missing rules inside `StyleSheet.create` when needed, and help keep the rule name linked between `styles.something` and the stylesheet key while editing. If a base rule like `container` or `text` already exists, the snippet tries to use a new name instead of overwriting the previous one.
+The prefixes `rnview`, `rntext`, `rnpress`, `rninput`, `rnscroll`, `rnsafe`, `rnimage`, `rnmodal`, `rnitem`, `rnlistitem`, `rnempty`, `rnloading`, `rnerror`, `rnskeleton`, `rnlistheader`, `rnsearchheader`, `rnsectionheader`, `rnlistempty`, and `rnrefresh` work as smart snippets: they insert JSX, add missing imports, create missing rules inside `StyleSheet.create` when needed, and help keep the rule name linked between `styles.something` and the stylesheet key while editing. If a base rule like `container` or `text` already exists, the snippet tries to use a new name instead of overwriting the previous one. In snippets with multiple style rules such as `rnpress`, the primary rule is now selected automatically after insertion so renaming stays closer to the single-rule snippet flow. `rnpress` also creates a `handlePress` helper automatically when the current component does not already define one. `rnlistitem` is the clearer alias for the old `rnitem` behavior. `rnlistempty` now creates `ListEmptyComponent={renderListEmpty}` and a helper instead of injecting a large inline JSX block. These smart JSX snippets are intended to be used inside a component, not at the top level of an empty file.
 
 Style aliases and `styles` references also work in props ending in `Style`, not only `style`. That includes cases such as `contentContainerStyle`, `labelStyle`, `containerStyle`, `headerStyle`, `footerStyle`, `iconStyle`, `inputStyle`, `wrapperStyle`, `buttonStyle`, `titleStyle`, or `subtitleStyle`, so components like `ScrollView` and many UI libraries follow the same completion flow.
 
@@ -521,6 +529,16 @@ Example `rnfocus`:
 ```tsx
 useFocusEffect(
   React.useCallback(() => {
+    let active = true;
+
+    const run = async () => {
+    };
+
+    run();
+
+    return () => {
+      active = false;
+    };
   }, [])
 );
 ```
@@ -657,6 +675,7 @@ Example `rncontroller`:
 - `rnsearchlist`
 - `rnsection`
 - `rnitem`
+- `rnlistitem`
 
 Example `rnflat`:
 
