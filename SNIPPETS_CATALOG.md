@@ -20,6 +20,7 @@ Estos prefijos insertan JSX, agregan imports faltantes cuando aplica y pueden cr
 ### Listas y estados
 
 - `rnitem`
+- `rnlistitem`
 - `rnempty`
 - `rnloading`
 - `rnerror`
@@ -91,7 +92,7 @@ Crea un archivo `ProductsScreen.tsx` y prueba este flujo:
 4. Debajo prueba `rnloading`.
 5. Sustituye el loading por `rnempty`.
 6. Dentro de un `FlatList` prueba `rnlistempty`.
-7. Para el item visual prueba `rnitem`.
+7. Para el item visual prueba `rnlistitem` o `rnitem`.
 8. Si necesitas `RefreshControl`, prueba `rnrefresh`.
 
 ## Ejemplo de playground
@@ -115,7 +116,7 @@ const ProductsScreen = () => {
         /* prueba rnlistempty aqui */
         /* prueba rnrefresh aqui */
         renderItem={({ item }) => (
-          /* prueba rnitem aqui */
+          /* prueba rnlistitem aqui */
           null
         )}
       />

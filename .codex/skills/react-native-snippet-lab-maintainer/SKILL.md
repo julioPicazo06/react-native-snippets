@@ -53,12 +53,11 @@ Whenever a new snippet, completion, code action, setting, or smart behavior is a
 
 ## Documentation language rules
 
-1. Keep Marketplace-facing primary documentation in English.
-2. Spanish documentation is allowed as secondary documentation.
-3. Preferred structure:
-   - `README.md` in English for the VS Code Marketplace
-   - `README.es.md` or separate Spanish docs for local and community support
-4. When a feature changes and the repo has both languages, update both or explicitly note the pending translation.
+1. Keep repository documentation in both English and Spanish when the bilingual structure exists.
+2. Keep `README.md` as the Marketplace-facing primary documentation in English.
+3. Keep `README.es.md` as the Spanish companion for local and community support.
+4. When a feature changes and the repo has both files, update both or explicitly note the pending translation.
+5. Do not let the Spanish documentation drift into a different product description or feature set.
 
 Recommended commit types:
 
@@ -102,6 +101,15 @@ Branch usage rules:
 10. Do not create tags automatically.
 11. Do not force-push shared branches.
 12. Before any commit or push, state the branch and target clearly.
+
+Tagging and version rules:
+
+1. Use Semantic Versioning with annotated tags in the format `v<major>.<minor>.<patch>`.
+2. Create tags only on `main`.
+3. Do not create tags on `develop`, `feature/*`, `fix/*`, or `release/*`.
+4. Create a release tag only after `release/<version>` has been merged into `main`.
+5. Do not create or push tags automatically unless the user explicitly asks for it.
+6. Treat `patch` as fixes, `minor` as backward-compatible features, and `major` as breaking changes or major milestones.
 
 ## Validation
 

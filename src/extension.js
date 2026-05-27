@@ -205,6 +205,9 @@ const STYLED_COMPONENT_SNIPPETS = {
       { index: 1, name: "button" },
       { index: 3, name: "buttonText" }
     ],
+    handlerPlaceholders: [
+      { index: 2, name: "handlePress", propName: "onPress" }
+    ],
     rules: ["button", "buttonText"],
     body: [
       "<Pressable style={styles.${1:button}} onPress={${2:handlePress}}>",
@@ -284,6 +287,25 @@ const STYLED_COMPONENT_SNIPPETS = {
     ]
   },
   rnitem: {
+    detail: "Insert a list item and create its style rules.",
+    imports: [{ source: "react-native", names: ["Pressable", "Text", "View"] }],
+    rulePlaceholders: [
+      { index: 1, name: "item" },
+      { index: 3, name: "content" },
+      { index: 4, name: "title" },
+      { index: 6, name: "subtitle" }
+    ],
+    rules: ["item", "content", "title", "subtitle"],
+    body: [
+      "<Pressable style={styles.${1:item}} onPress={() => ${2}}> ",
+      "  <View style={styles.${3:content}}>",
+      "    <Text style={styles.${4:title}}>${5:Title}</Text>",
+      "    <Text style={styles.${6:subtitle}}>${7:Subtitle}</Text>",
+      "  </View>",
+      "</Pressable>"
+    ]
+  },
+  rnlistitem: {
     detail: "Insert a list item and create its style rules.",
     imports: [{ source: "react-native", names: ["Pressable", "Text", "View"] }],
     rulePlaceholders: [
@@ -440,8 +462,24 @@ const STYLED_COMPONENT_SNIPPETS = {
     ]
   },
   rnlistempty: {
-    detail: "Insert a ListEmptyComponent block and create its style rules.",
+    detail: "Insert a ListEmptyComponent helper and create its style rules.",
     imports: [{ source: "react-native", names: ["Text", "View"] }],
+    handlerPlaceholders: [
+      {
+        index: 6,
+        name: "renderListEmpty",
+        propName: "ListEmptyComponent",
+        text: (handlerName, indentation) =>
+          `\n${indentation}const ${handlerName} = () => {\n` +
+          `${indentation}  return (\n` +
+          `${indentation}    <View style={styles.listEmptyState}>\n` +
+          `${indentation}      <Text style={styles.listEmptyTitle}>No items found</Text>\n` +
+          `${indentation}      <Text style={styles.listEmptySubtitle}>Try changing your filters or create a new item.</Text>\n` +
+          `${indentation}    </View>\n` +
+          `${indentation}  );\n` +
+          `${indentation}};\n\n`
+      }
+    ],
     rulePlaceholders: [
       { index: 1, name: "listEmptyState" },
       { index: 2, name: "listEmptyTitle" },
@@ -449,12 +487,7 @@ const STYLED_COMPONENT_SNIPPETS = {
     ],
     rules: ["listEmptyState", "listEmptyTitle", "listEmptySubtitle"],
     body: [
-      "ListEmptyComponent={",
-      "  <View style={styles.${1:listEmptyState}}>",
-      "    <Text style={styles.${2:listEmptyTitle}}>${3:No items found}</Text>",
-      "    <Text style={styles.${4:listEmptySubtitle}}>${0:Try changing your filters or create a new item.}</Text>",
-      "  </View>",
-      "}"
+      "ListEmptyComponent={${6:renderListEmpty}}$0"
     ]
   }
 };
@@ -504,9 +537,36 @@ function createStyleValueAliasCompletion(alias, propertyName, value, range) {
 }
 
 function getCurrentWordRange(document, position) {
-  return document.getWordRangeAtPosition(
-    position,
-    /[A-Za-z_$][A-Za-z0-9_$]*/
+  const fullLineRange = new vscode.Range(
+    new vscode.Position(position.line, 0),
+    new vscode.Position(position.line, document.lineAt(position.line).text.length)
+  );
+  const lineText = document.getText(fullLineRange);
+  const cursorCharacter = position.character;
+  let start = cursorCharacter;
+  let end = cursorCharacter;
+
+  while (start > 0 && /[A-Za-z0-9_$]/.test(lineText[start - 1])) {
+    start -= 1;
+  }
+
+  while (end < lineText.length && /[A-Za-z0-9_$]/.test(lineText[end])) {
+    end += 1;
+  }
+
+  if (start === end) {
+    return null;
+  }
+
+  const candidate = lineText.slice(start, end);
+
+  if (!/^[A-Za-z_$][A-Za-z0-9_$]*$/.test(candidate)) {
+    return null;
+  }
+
+  return new vscode.Range(
+    new vscode.Position(position.line, start),
+    new vscode.Position(position.line, end)
   );
 }
 
@@ -2632,26 +2692,71 @@ function parseNamedImportSpecifiers(specifiersText) {
     .filter(Boolean);
 }
 
+function getImportedBindingName(specifier) {
+  const aliasMatch = /^\s*([A-Za-z_$][A-Za-z0-9_$]*)\s+as\s+([A-Za-z_$][A-Za-z0-9_$]*)\s*$/.exec(
+    specifier
+  );
+
+  if (aliasMatch) {
+    return aliasMatch[2];
+  }
+
+  const trimmedSpecifier = specifier.trim();
+
+  return /^[A-Za-z_$][A-Za-z0-9_$]*$/.test(trimmedSpecifier)
+    ? trimmedSpecifier
+    : null;
+}
+
+function getNamedImportStatements(document) {
+  const fullText = document.getText();
+  const importRegex =
+    /import\s+(type\s+)?(?:(?<defaultImport>[A-Za-z_$][A-Za-z0-9_$]*)\s*,\s*)?\{(?<specifiers>[\s\S]*?)\}\s*from\s*['"](?<source>[^'"]+)['"];?/gm;
+  const statements = [];
+  let match = importRegex.exec(fullText);
+
+  while (match) {
+    const groups = match.groups || {};
+    const specifiers = parseNamedImportSpecifiers(groups.specifiers || "");
+
+    statements.push({
+      defaultImport: groups.defaultImport || "",
+      fullImport: match[0],
+      importedNames: specifiers
+        .map((specifier) => getImportedBindingName(specifier))
+        .filter(Boolean),
+      isTypeOnly: Boolean(match[1]),
+      range: new vscode.Range(
+        document.positionAt(match.index),
+        document.positionAt(match.index + match[0].length)
+      ),
+      source: groups.source || ""
+    });
+
+    match = importRegex.exec(fullText);
+  }
+
+  return statements;
+}
+
 function getNamedImportInfo(document, moduleName) {
   const fullText = document.getText();
-  const escapedModuleName = escapeForRegex(moduleName);
-  const namedImportRegex = new RegExp(
-    `import\\s*(?:[^\\n,{]+\\s*,\\s*)?\\{([\\s\\S]*?)\\}\\s*from\\s*['"]${escapedModuleName}['"];?`,
-    "m"
+  const namedImportStatement = getNamedImportStatements(document).find(
+    (statement) => statement.source === moduleName
   );
-  const namedImportMatch = namedImportRegex.exec(fullText);
 
-  if (namedImportMatch) {
+  if (namedImportStatement) {
     return {
-      fullImport: namedImportMatch[0],
+      defaultImport: namedImportStatement.defaultImport,
+      fullImport: namedImportStatement.fullImport,
       hasNamedImport: true,
-      importedNames: parseNamedImportSpecifiers(namedImportMatch[1]),
-      range: new vscode.Range(
-        document.positionAt(namedImportMatch.index),
-        document.positionAt(namedImportMatch.index + namedImportMatch[0].length)
-      )
+      importedNames: namedImportStatement.importedNames,
+      isTypeOnly: namedImportStatement.isTypeOnly,
+      range: namedImportStatement.range
     };
   }
+
+  const escapedModuleName = escapeForRegex(moduleName);
 
   const anyImportRegex = new RegExp(
     `import\\s+.*from\\s*['"]${escapedModuleName}['"];?`,
@@ -2693,26 +2798,70 @@ function getImportInsertionPosition(document) {
 }
 
 function buildNamedImport(fullImport, namesToEnsure, moduleName) {
-  const escapedModuleName = escapeForRegex(moduleName);
-  const specifierMatch = new RegExp(
-    `import\\s*(?:[^\\n,{]+\\s*,\\s*)?\\{([\\s\\S]*?)\\}\\s*from\\s*['"]${escapedModuleName}['"]`
-  ).exec(
-    fullImport
-  );
+  const statement = getNamedImportStatements({
+    getText() {
+      return fullImport;
+    },
+    positionAt(offset) {
+      return new vscode.Position(0, offset);
+    }
+  })[0];
 
-  if (!specifierMatch) {
+  if (!statement) {
     return fullImport;
   }
 
-  const specifiers = parseNamedImportSpecifiers(specifierMatch[1]);
-  const nextSpecifiers = Array.from(
-    new Set([...namesToEnsure, ...specifiers])
+  return buildNamedImportStatement(
+    moduleName,
+    Array.from(new Set([...namesToEnsure, ...statement.importedNames])),
+    {
+      defaultImport: statement.defaultImport,
+      isTypeOnly: statement.isTypeOnly
+    }
   );
+}
 
-  return fullImport.replace(
-    /\{[\s\S]*?\}/,
-    `{ ${nextSpecifiers.join(", ")} }`
-  );
+function buildNamedImportStatement(
+  moduleName,
+  importedNames,
+  options = {}
+) {
+  const uniqueNames = Array.from(new Set(importedNames)).filter(Boolean);
+  const defaultImport = options.defaultImport || "";
+  const defaultSegment = defaultImport ? `${defaultImport}, ` : "";
+  const typeSegment = options.isTypeOnly ? "type " : "";
+
+  return `import ${typeSegment}${defaultSegment}{ ${uniqueNames.join(", ")} } from '${moduleName}';`;
+}
+
+function getConflictingNamedImportEdits(document, moduleName, namesToEnsure) {
+  const targetNames = new Set(namesToEnsure);
+
+  return getNamedImportStatements(document)
+    .filter((statement) => statement.source && statement.source !== moduleName)
+    .flatMap((statement) => {
+      const remainingImportedNames = statement.importedNames.filter(
+        (name) => !targetNames.has(name)
+      );
+
+      if (remainingImportedNames.length === statement.importedNames.length) {
+        return [];
+      }
+
+      if (!remainingImportedNames.length && !statement.defaultImport) {
+        return [vscode.TextEdit.replace(statement.range, "")];
+      }
+
+      return [
+        vscode.TextEdit.replace(
+          statement.range,
+          buildNamedImportStatement(statement.source, remainingImportedNames, {
+            defaultImport: statement.defaultImport,
+            isTypeOnly: statement.isTypeOnly
+          })
+        )
+      ];
+    });
 }
 
 function getNamedImportEdits(document, moduleName, namesToEnsure) {
@@ -2723,16 +2872,22 @@ function getNamedImportEdits(document, moduleName, namesToEnsure) {
   }
 
   const importInfo = getNamedImportInfo(document, moduleName);
+  const cleanupEdits = getConflictingNamedImportEdits(
+    document,
+    moduleName,
+    uniqueNames
+  );
   const missingNames = uniqueNames.filter(
     (name) => !importInfo.importedNames.includes(name)
   );
 
   if (!missingNames.length) {
-    return [];
+    return cleanupEdits;
   }
 
   if (importInfo.hasNamedImport) {
     return [
+      ...cleanupEdits,
       vscode.TextEdit.replace(
         importInfo.range,
         buildNamedImport(importInfo.fullImport, uniqueNames, moduleName)
@@ -2741,9 +2896,10 @@ function getNamedImportEdits(document, moduleName, namesToEnsure) {
   }
 
   return [
+    ...cleanupEdits,
     vscode.TextEdit.insert(
       importInfo.insertPosition,
-      `import { ${uniqueNames.join(", ")} } from '${moduleName}';\n`
+      `${buildNamedImportStatement(moduleName, uniqueNames)}\n`
     )
   ];
 }
@@ -2997,7 +3153,8 @@ function createStyledSnippetCompletion(prefix, range, snippetConfig, document) {
   item.sortText = `0-${prefix}`;
   item.filterText = prefix;
   item.range = range;
-  const shouldSelectPrimaryRuleOnInsert =
+  const primaryRuleName = uniqueRuleNames[0] || null;
+  const shouldInlinePrimaryRuleName =
     snippetConfig.rules.length === 1 &&
     snippetConfig.rulePlaceholders &&
     snippetConfig.rulePlaceholders.length === 1;
@@ -3005,15 +3162,15 @@ function createStyledSnippetCompletion(prefix, range, snippetConfig, document) {
     buildStyledSnippetBody(
       snippetConfig,
       uniqueRuleNames,
-      shouldSelectPrimaryRuleOnInsert
+      shouldInlinePrimaryRuleName
     )
   );
 
-  if (shouldSelectPrimaryRuleOnInsert) {
+  if (primaryRuleName) {
     item.command = {
       command: "reactNativeSnippetLab.selectInsertedStyleRule",
       title: "Select inserted style rule",
-      arguments: [uniqueRuleNames[0]]
+      arguments: [primaryRuleName]
     };
   }
 
@@ -3026,7 +3183,10 @@ function createStyledSnippetCompletion(prefix, range, snippetConfig, document) {
     });
   }
 
-  const additionalTextEdits = getImportEdits(document, requiredImports);
+  const additionalTextEdits = [
+    ...getImportEdits(document, requiredImports),
+    ...getStyledSnippetHandlerEdits(document, range.start, snippetConfig)
+  ];
 
   if (missingRules.length) {
     additionalTextEdits.push(
@@ -3094,10 +3254,45 @@ function buildStyledSnippetBody(
   return body;
 }
 
+function getStyledSnippetHandlerEdits(document, position, snippetConfig) {
+  if (
+    !snippetConfig.handlerPlaceholders ||
+    !snippetConfig.handlerPlaceholders.length
+  ) {
+    return [];
+  }
+
+  const componentInfo = findEnclosingComponentInfo(document, position);
+
+  if (!componentInfo) {
+    return [];
+  }
+
+  const declaredFunctionNames = new Set(
+    getDeclaredFunctionNames(componentInfo.bodyText)
+  );
+
+  return snippetConfig.handlerPlaceholders
+    .filter((placeholder) => !declaredFunctionNames.has(placeholder.name))
+    .map((placeholder) =>
+      vscode.TextEdit.insert(
+        componentInfo.insertPosition,
+        (
+          placeholder.text ||
+          getHandlerTemplate(placeholder.propName).text
+        )(placeholder.name, componentInfo.indentation)
+      )
+    );
+}
+
 function getStyledSnippetCompletions(document, position, wordRange) {
   const currentWord = getWordValue(document, wordRange).toLowerCase();
 
   if (!currentWord) {
+    return [];
+  }
+
+  if (!findEnclosingComponentInfo(document, position)) {
     return [];
   }
 
@@ -3234,7 +3429,7 @@ function getHandlerTemplate(propName) {
         documentation:
           "Creates a handler with a `value` parameter for `onChangeText`.",
         text: (handlerName, indentation) =>
-          `${indentation}const ${handlerName} = (value) => {\n` +
+          `\n${indentation}const ${handlerName} = (value) => {\n` +
           `${indentation}  \n` +
           `${indentation}};\n\n`
       };
@@ -3244,7 +3439,7 @@ function getHandlerTemplate(propName) {
         documentation:
           "Creates a `renderItem` helper with `{ item, index }` parameters.",
         text: (handlerName, indentation) =>
-          `${indentation}const ${handlerName} = ({ item, index }) => {\n` +
+          `\n${indentation}const ${handlerName} = ({ item, index }) => {\n` +
           `${indentation}  return null;\n` +
           `${indentation}};\n\n`
       };
@@ -3254,7 +3449,7 @@ function getHandlerTemplate(propName) {
         documentation:
           "Creates a `keyExtractor` helper with `item` and `index` parameters.",
         text: (handlerName, indentation) =>
-          `${indentation}const ${handlerName} = (item, index) => {\n` +
+          `\n${indentation}const ${handlerName} = (item, index) => {\n` +
           `${indentation}  return item.id?.toString() ?? String(index);\n` +
           `${indentation}};\n\n`
       };
@@ -3267,7 +3462,7 @@ function getHandlerTemplate(propName) {
         documentation:
           `Creates a component helper suitable for \`${propName}\`.`,
         text: (handlerName, indentation) =>
-          `${indentation}const ${handlerName} = () => {\n` +
+          `\n${indentation}const ${handlerName} = () => {\n` +
           `${indentation}  return null;\n` +
           `${indentation}};\n\n`
       };
@@ -3278,7 +3473,7 @@ function getHandlerTemplate(propName) {
         documentation:
           `Creates a section renderer with a \`section\` parameter for \`${propName}\`.`,
         text: (handlerName, indentation) =>
-          `${indentation}const ${handlerName} = ({ section }) => {\n` +
+          `\n${indentation}const ${handlerName} = ({ section }) => {\n` +
           `${indentation}  return null;\n` +
           `${indentation}};\n\n`
       };
@@ -3288,7 +3483,7 @@ function getHandlerTemplate(propName) {
         documentation:
           "Creates a component handler before the component return.",
         text: (handlerName, indentation) =>
-          `${indentation}const ${handlerName} = () => {\n` +
+          `\n${indentation}const ${handlerName} = () => {\n` +
           `${indentation}  \n` +
           `${indentation}};\n\n`
       };

@@ -4,6 +4,15 @@
   "description": "Snippets and style aliases for React Native in Visual Studio Code.",
   "version": "0.0.1",
   "publisher": "juliopicazo",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/julioPicazo06/react-native-snippets.git"
+  },
+  "homepage": "https://github.com/julioPicazo06/react-native-snippets",
+  "bugs": {
+    "url": "https://github.com/julioPicazo06/react-native-snippets/issues"
+  },
   "engines": {
     "vscode": "^1.85.0"
   },
